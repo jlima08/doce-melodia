@@ -1,0 +1,190 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<app-card-page title="Professores">
+  <span #iconTitle cardIcon class="material-symbols-outlined">artist</span>
+
+  <p-button
+    [label]="!CadProf ? 'Novo Motorista' : 'Fechar cadastro'"
+    severity="secondary"
+    [raised]="true"
+    [icon]="!CadProf ? 'pi pi-plus' : 'pi pi-times'"
+    cardPageRight
+    (click)="CadProf = !CadProf"
+  />
+
+  @if (CadProf) {
+    <div class="cadastrarMotorista">
+      <h2 class="">
+        <i class="pi pi-info-circle"></i>
+        @if(!editando){
+          Insira as informações do professor
+         para cadastrar.
+
+        }@else {
+          Editando professor
+        }
+      </h2>
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              id="nome"
+              autocomplete="off"
+              formControlName="nome"
+            />
+            <label for="nome">Nome</label>
+          </p-floatlabel>
+          @if (form.get("nome")?.invalid && form.get("nome")?.touched) {
+            <small class="text-red-500"> O nome é obrigatório. </small>
+          }
+        </div>
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              id="sobrenome"
+              autocomplete="off"
+              formControlName="sobrenome"
+            />
+            <label for="sobrenome">Sobrenome</label>
+          </p-floatlabel>
+        </div>
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              id="email"
+              autocomplete="off"
+              type="email"
+              formControlName="email"
+            />
+            <label for="email">Email</label>
+          </p-floatlabel>
+          @if (form.get("email")?.invalid && form.get("email")?.touched) {
+            <small class="text-red-500"> O email é obrigatório. </small>
+          }
+        </div>
+        <div>
+          <p-floatlabel>
+            <p-select
+              class="w-full"
+              inputId="perfil"
+              formControlName="admin"
+              [options]="perfis"
+              optionLabel="label"
+              optionValue="value"
+            >
+            </p-select>
+
+            <label>Perfil</label>
+          </p-floatlabel>
+        </div>
+        <div>
+          <p-floatlabel>
+            <p-multiselect
+              class="w-full"
+              inputId="instrumentos"
+              formControlName="instrumentos"
+              [options]="instrumentos"
+              optionLabel="label"
+              optionValue="value"
+            >
+            </p-multiselect>
+
+            <label>Instrumento</label>
+          </p-floatlabel>
+        </div>
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              id="over_label"
+              autocomplete="off"
+              type="password"
+              formControlName="senha"
+            />
+            <label for="over_label">Senha</label>
+          </p-floatlabel>
+        </div>
+
+        <div class="btn-form">
+          <p-button
+            type="submit"
+            icon="pi pi-save"
+            label="{{ editando ? 'Atualizar' : 'Salvar' }}"
+            severity="secondary"
+            [loading]="loading"
+            [raised]="true"
+          ></p-button>
+          <p-button
+            icon="pi pi-times"
+            label="Cancelar"
+            outlined="true"
+            [raised]="true"
+            severity="danger"
+            (click)="btnCancelar()"
+          ></p-button>
+        </div>
+      </form>
+    </div>
+  }
+  
+    <p-table
+      [value]="professores"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      dataKey="id"
+      stripedRows
+      [tableStyle]="{ 'min-width': '60rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nome</th>
+
+          <th>Email</th>
+
+          <th>Instrumentos</th>
+
+          <th>Perfil</th>
+
+          <th style="width: 150px">Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-professor>
+        <tr>
+          <td>
+            {{ professor.nome }}
+            {{ professor.sobrenome }}
+          </td>
+
+          <td>
+            {{ professor.email }}
+          </td>
+
+          <td>
+            {{ professor.instrumentos.join(", ") }}
+          </td>
+
+          <td>
+            @if (professor.admin) {
+              Administrador
+            } @else {
+              Professor
+            }
+          </td>
+
+          <td>
+            <p-button icon="pi pi-pencil" outlined="true" rounded  severity="info"  (click)="editarProfessor(professor)">
+            </p-button>
+
+            <p-button icon="pi pi-trash" outlined rounded  severity="danger" (onClick)="modalExcluir($event, professor)">
+            </p-button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  
+</app-card-page>

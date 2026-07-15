@@ -1,0 +1,21 @@
+<div class="main">
+    <div class="header">
+        <div class="flex items-center gap-2">
+            <i ngClass="pi + {{ icon }} "></i>
+            <ng-content select="[cardIcon]"></ng-content>
+            <h2>{{ title }}</h2>
+        </div>
+
+      <div class="flex items-center text-muted-color p-6 bg-[#f8fafc]">
+        <ng-content select="[cardPageRight]"></ng-content>
+      </div>
+        <!-- <p-button label="Novo Motorista" severity="contrast" icon="pi pi-plus" /> -->
+    </div>
+
+     <!-- CARD CENTRAL -->
+    <div class="flex flex-col flex-1 px-6 text-muted-color mb-6">
+      <ng-content></ng-content>
+    </div>
+    
+
+</div>

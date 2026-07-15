@@ -1,0 +1,78 @@
+ <p-toast [showTransitionOptions]="'250ms'" [showTransformOptions]="'translateX(100%)'" [hideTransitionOptions]="'150ms'" [hideTransformOptions]="'translateX(100%)'" />
+<div class="main-desktop">
+    <div class="cardLeft">
+        <!-- <h2>Bem-vindo ao Sistema</h2> -->
+            <!-- <p>Gerenciamento de veículos da <strong>Soares Segurança</strong></p> -->
+        <img src="/logo02.png" alt="" srcset="">
+    </div>
+    <div class="cardRight">
+        
+        <div class="titulo">
+            <h2>Bem-vindo ao Sistema</h2>
+            <p>Gerenciamento de aulas da <strong>Doce Melodia</strong> </p> 
+            <div class="pulse">
+                <span class="material-symbols-outlined">music_note</span>
+                <span class="material-symbols-outlined">headphones</span>
+                <span class="material-symbols-outlined">music_note_2</span>
+            </div>
+                   
+        </div>
+         <form [formGroup]="form" (ngSubmit)="entrar()" >
+            <h2>Use seu email e senha para fazer o login.</h2>
+            <p-floatlabel variant="on">
+                <input pInputText id="username" type="email"  formControlName="email" />
+                <label for="username">E-mail</label>
+            </p-floatlabel>
+            <p-floatlabel variant="on">
+                <input pInputText id="password" type="password"  formControlName="senha" autocomplete="off" />
+                <label for="password">Senha</label>
+            </p-floatlabel>
+
+            <div class="w-[55%]">
+                <p-button styleClass="w-[100%]"  icon="pi pi-sign-in" label="Entrar" type="submit" [raised]="true" severity="secondary"  />
+            </div>
+
+        </form>
+        <div>
+            <span class="copy"> © Escola de música Doce Melodia</span>
+        </div>
+    </div>
+</div>
+
+<div class="main-mobile">
+    <!-- <div class="cardLeft">
+        <h2>Gerenciamento de Frota</h2>
+        <img src="/logoSoares.png" alt="" srcset="">
+    </div> -->
+    <div class="cardRight">
+        <div class="logo">
+            <img class="w-40% text-center" src="/LogoSoares-Titulo.jpeg" alt="" srcset="">
+
+        </div>
+        <div class="branco">
+            <span class="sm:hidden block titulo">
+                <!-- <i class="pi pi-car"></i> -->
+                <h2>Bem-vindo ao Sistema</h2>
+                <p>Gerenciamento de veículos da <strong>Soares Segurança</strong></p>
+            </span>
+             <form >
+                <h2>Use seu email e senha para fazer o login.</h2>
+                <p-floatlabel variant="on">
+                    <input pInputText id="username" type="email"  name="username" />
+                    <label for="username">E-mail</label>
+                </p-floatlabel>
+                <p-floatlabel variant="on">
+                    <input pInputText id="password" type="password"  name="password" autocomplete="off" />
+                    <label for="password">Senha</label>
+                </p-floatlabel>
+                <div class="w-[55%]">
+                    <p-button styleClass="w-[100%] " icon="pi pi-sign-in" label="Entrar"  [raised]="true" severity="info"  />
+                </div>
+                <!-- @if (errorMessage()) {
+                    <div class="p-error mt-3">{{ errorMessage() }}</div>
+                } -->
+            </form>
+            <span class="copy"> © Soares Segurança Eletrônica</span>
+        </div>
+    </div>
+</div>

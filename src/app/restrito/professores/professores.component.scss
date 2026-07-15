@@ -1,0 +1,54 @@
+.cadastrarMotorista{
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #ffffff;
+    min-height: 100px;
+    h2{
+        color: #c4c4c4;
+    }
+    form{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 8px;
+        margin-top: 15px;
+        div{
+            width: 15%;
+            input{
+                width: 100%;
+            }
+        }
+    }
+
+    div{
+        display: flex;
+        flex-direction: column;
+        margin-top: 10px;
+    }
+
+    .btn-form{
+        flex-direction: row;
+        gap: 10px;
+        
+    }
+}
+span{
+    font-weight: 500;
+    font-size: 32px;
+}
+
+th{
+    background-color: var(--dourado) !important;
+    color: #ffffff !important;
+}
+
+@media screen and (max-width: 600px) {
+    form{
+        flex-direction: column;
+        div{
+            width: 90% !important;
+        }
+    }
+
+}

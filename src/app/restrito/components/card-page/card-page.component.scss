@@ -1,0 +1,33 @@
+.main{
+    width: 100%;
+    padding: 8px;
+    box-shadow: 1px 1px 10px #ececec;
+    min-height: 500px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+}
+
+.header{
+    width: 100%;
+    padding: 14px;
+    border-bottom: 1px solid #ececec;
+    display: flex;
+    justify-content: space-between;
+    h2{
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        font-size: 28px;
+    }
+    i{
+        font-weight: 600;
+        font-size: 25px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header{
+        flex-direction: column;
+        gap: 20px;
+    }
+
+}

@@ -1,0 +1,117 @@
+<p-toast />
+<p-confirmdialog />
+
+<div class="layout">
+  <!-- **********sidebar********** -->
+  <div class="sidebar" [class.closed]="open">
+    <div class="logo">
+      <img src="/logo02.png" alt="" srcset="" />
+    </div>
+    <!-- <p class="title">Administrador</p> -->
+    <div class="links">
+      
+      <a routerLinkActive="link-ativo"
+        (click)="fecharSidebarMobile()"
+        routerLink="/restrito/aulas">
+        <span class="material-symbols-outlined">school</span>
+         Aulas
+      </a>
+      <a
+        routerLinkActive="link-ativo"
+        (click)="fecharSidebarMobile()"
+        routerLink="/restrito/professores"
+        ><span class="material-symbols-outlined">artist</span>
+         Professores</a
+      >
+      
+      <!-- <a routerLinkActive="link-ativo" (click)="fecharSidebarMobile()" routerLink="/restrito/relatorio"><i class="pi pi-file"></i> Relatórios</a> -->
+      
+        <a
+          routerLinkActive="link-ativo "
+          (click)="fecharSidebarMobile()"
+          routerLink="/restrito/alunos"
+          ><span class="material-symbols-outlined">group</span>
+           Alunos</a
+        >
+      
+      <a
+        routerLinkActive="link-ativo"
+        (click)="fecharSidebarMobile()"
+        routerLink="/restrito/minha-conta"
+        ><i class="pi pi-user-edit"></i> Minha conta</a
+      >
+    </div>
+    <div class="sidebar-end">
+      <span class="details-user">
+        <div class="user">
+          <p-avatar
+            [label]="getIniciais(usuario?.nome, usuario?.sobrenome)"
+            styleClass="ml-2"
+            size="normal"
+          />
+          <div class="flex flex-col overflow-hidden">
+            <p
+              pTooltip="{{ usuario?.nome }} {{ usuario?.sobrenome }}"
+              class="text-[16px] font-bold overflow-hidden text-ellipsis text-nowrap"
+            >
+              {{ usuario?.nome }} {{ usuario?.sobrenome }}
+            </p>
+            <p>
+              {{ usuario?.admin ? 'Administrador' : 'Professor' }}
+            </p>
+          </div>
+        </div>
+      </span>
+    </div>
+  </div>
+  <!-- ********************************* -->
+
+  <div class="centro">
+    <header>
+      <div class="gradiente"></div>
+      <div class="btns-header">
+        <div class="flex gap-4 items-center">
+          <button class="cursor-pointer btn-none" (click)="toggleSidebar()">
+            @if (open == false) {
+              <p-button
+                icon="pi pi-bars"
+                severity="contrast"
+                outlined="true"
+              ></p-button>
+            } @else {
+              <p-button icon="pi pi-times" severity="contrast"></p-button>
+            }
+          </button>
+          
+        </div>
+        <p-button
+          size="small"
+          variant="outlined"
+          icon="pi pi-sign-out"
+          label="Sair"
+          severity="danger"
+          (onClick)="toastLogout($event)"
+        >
+        </p-button>
+      </div>
+    </header>
+
+    <main>
+      <div>
+        <router-outlet></router-outlet>
+      </div>
+
+      <footer>
+        <span>
+          © 2026 -
+          <a
+            target="_blank"
+            href="https://www.linkedin.com/in/jonatas-lima-7bb323240"
+            >Jonatas Lima</a
+          >
+        </span>
+        <span> Escola de música Doce Melodia </span>
+      </footer>
+    </main>
+  </div>
+</div>
