@@ -1,59 +1,164 @@
-# DoceMelodia
+# 🎵 Doce Melodia - Sistema de Gestão Escolar
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+> Sistema web para gerenciamento de professores, alunos e aulas de uma escola de música.
 
-## Development server
+> ⚠️ Este projeto foi desenvolvido para fins de estudo e portfólio. Não é um sistema oficial da Escola de Música Doce Melodia.
 
-To start a local development server, run:
+---
+
+## 📖 Sobre
+
+O Doce Melodia é um sistema desenvolvido para facilitar a administração de uma escola de música, permitindo o gerenciamento de professores, alunos e aulas em um ambiente moderno, intuitivo e responsivo.
+
+O projeto está sendo desenvolvido utilizando Angular 19 e Firebase, aplicando boas práticas de arquitetura, componentização e autenticação.
+
+---
+
+## 🚀 Tecnologias
+
+- Angular 19
+- TypeScript
+- Firebase Authentication
+- Cloud Firestore
+- AngularFire
+- PrimeNG
+- Tailwind CSS
+- RxJS
+
+---
+
+## ✨ Funcionalidades
+
+### 🔐 Autenticação
+
+- Login de usuários
+- Controle de acesso
+- Proteção de rotas
+
+### 👨‍🏫 Professores
+
+- Cadastro
+- Edição
+- Exclusão
+- Listagem
+- Definição de perfil (Administrador/Professor)
+- Associação de instrumentos
+
+### 👨‍🎓 Alunos *(Em desenvolvimento)*
+
+- Cadastro
+- Edição
+- Exclusão
+- Listagem
+
+### 🎼 Aulas *(Em desenvolvimento)*
+
+- Cadastro de aulas
+- Associação entre professor e alunos
+- Controle de horários
+
+---
+
+## 📂 Estrutura do Projeto
+
+```
+src/
+│
+├── app/
+│   ├── core/
+│   │   ├── models/
+│   │   ├── services/
+│   │   └── guards/
+│   │
+│   ├── login/
+│   │
+│   └── restrito/
+│       ├── professores/
+│       ├── alunos/
+│       ├── aulas/
+│       └── components/
+│
+├── environments/
+└── assets/
+```
+
+---
+
+## 📸 Telas
+
+Em breve...
+
+---
+
+## ⚙️ Como executar
+
+Clone o projeto
+
+```bash
+git clone https://github.com/seuusuario/doce-melodia.git
+```
+
+Entre na pasta
+
+```bash
+cd doce-melodia
+```
+
+Instale as dependências
+
+```bash
+npm install
+```
+
+Execute
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Acesse
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```
+http://localhost:4200
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 🎯 Objetivos do projeto
 
-## Building
+Este projeto foi criado para praticar e demonstrar conhecimentos em:
 
-To build the project run:
+- Angular Standalone
+- Componentização
+- Reactive Forms
+- Firebase Authentication
+- Firestore
+- CRUD
+- Guards
+- Lazy Loading
+- Organização em camadas
+- UX/UI com PrimeNG
+- Responsividade
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📌 Roadmap
 
-## Running unit tests
+- [x] Login
+- [x] CRUD de Professores
+- [ ] CRUD de Alunos
+- [ ] CRUD de Aulas
+- [ ] Dashboard
+- [ ] Calendário de aulas
+- [ ] Relatórios
+- [ ] Controle de pagamentos
+- [ ] Chamada de alunos
+- [ ] Perfil do usuário
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## 👨‍💻 Autor
 
-## Running end-to-end tests
+Desenvolvido por **Jonatas Lima**
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+LinkedIn: (https://www.linkedin.com/in/jonatas-lima-7bb323240/)
