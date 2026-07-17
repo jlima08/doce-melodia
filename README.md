@@ -157,6 +157,26 @@ Este projeto foi criado para praticar e demonstrar conhecimentos em:
 
 ---
 
+## 💡 Aprendizados
+
+Durante o desenvolvimento deste projeto foram aplicados conceitos como:
+
+- Arquitetura em camadas
+- Componentes Standalone
+- Lazy Loading
+- Reactive Forms
+- Guards de autenticação
+- Firebase Authentication
+- Firestore
+- CRUD em tempo real
+- Organização de serviços
+- Boas práticas com Angular 19
+- PrimeNG
+- Tailwind CSS
+- RxJS
+
+---
+
 ## 👨‍💻 Autor
 
 Desenvolvido por **Jonatas Lima**

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guard/auth.guard';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
       },
       {
        path: 'restrito',
+       canActivate: [authGuard],
        loadComponent: () =>
         import('./restrito/layout/layout.component')
             .then(m => m.LayoutComponent),

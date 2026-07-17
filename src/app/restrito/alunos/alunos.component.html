@@ -1,1 +1,179 @@
-<p>alunos works!</p>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<app-card-page title="Alunos">
+  <span #iconTitle cardIcon class="material-symbols-outlined">group</span>
+  <p-button
+    [label]="!CadAluno ? 'Novo Aluno' : 'Fechar cadastro'"
+    severity="secondary"
+    [raised]="true"
+    [icon]="!CadAluno ? 'pi pi-plus' : 'pi pi-times'"
+    cardPageRight
+    (click)="CadAluno = !CadAluno"
+  />
+
+  @if (CadAluno) {
+    <div class="cadastrarMotorista">
+      <h2 class="">
+        <i class="pi pi-info-circle"></i>
+        @if (!editando) {
+          Insira as informações do professor para cadastrar.
+        } @else {
+          Editando professor
+        }
+      </h2>
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              id="nome"
+              autocomplete="off"
+              formControlName="nome"
+            />
+            <label for="nome">Nome</label>
+          </p-floatlabel>
+          @if (form.get("nome")?.invalid && form.get("nome")?.touched) {
+            <small class="text-red-500"> O nome é obrigatório. </small>
+          }
+        </div>
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              id="sobrenome"
+              autocomplete="off"
+              formControlName="sobrenome"
+            />
+            <label for="sobrenome">Sobrenome</label>
+          </p-floatlabel>
+        </div>
+        <div>
+          <p-floatlabel>
+            <p-inputMask
+              styleClass="w-full"
+              mask="999.999.999-99"
+              formControlName="cpf"
+              inputId="cpf"
+            >
+            </p-inputMask>
+            <label for="email">CPF</label>
+          </p-floatlabel>
+          @if (form.get("cpf")?.invalid && form.get("cpf")?.touched) {
+            <small class="text-red-500"> O CPF é obrigatório. </small>
+          }
+        </div>
+        <div>
+          <p-floatlabel>
+            <p-inputMask
+              styleClass="w-full"
+              mask="(99) 99999-9999"
+              formControlName="contato"
+              inputId="contato"
+            >
+            </p-inputMask>
+
+            <label for="contato"> Contato </label>
+          </p-floatlabel>
+        </div>
+        <div>
+          <p-floatlabel>
+            <p-datepicker
+              inputId="dataNascimento"
+              formControlName="dataNascimento"
+              dateFormat="dd/mm/yy"
+              showIcon
+            >
+            </p-datepicker>
+
+            <label> Data de nascimento </label>
+          </p-floatlabel>
+        </div>
+
+        <div class="btn-form">
+          <p-button
+            type="submit"
+            icon="pi pi-save"
+            label="{{ editando ? 'Atualizar' : 'Salvar' }}"
+            severity="secondary"
+            [loading]="loading"
+            [raised]="true"
+          ></p-button>
+          <p-button
+            icon="pi pi-times"
+            label="Cancelar"
+            outlined="true"
+            [raised]="true"
+            severity="danger"
+            (click)="btnCancelar()"
+          ></p-button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <p-table
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [value]="alunos"
+    stripedRows
+    dataKey="id"
+    [tableStyle]="{ 'min-width': '60rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Nome</th>
+
+        <th>CPF</th>
+
+        <th>Contato</th>
+
+        <th>Data Nascimento</th>
+
+        <th style="width: 150px">Ações</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-aluno>
+      <tr>
+        <td>
+          {{ aluno.nome }}
+          {{ aluno.sobrenome }}
+        </td>
+
+        <td>
+          {{ aluno.cpf }}
+        </td>
+
+        <td>
+          {{ aluno.contato }}
+        </td>
+
+        <td>
+          {{ aluno.dataNascimento.toDate() | date: "dd/MM/yyyy" }}
+        </td>
+
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            rounded
+            outlined
+            severity="info"
+            (onClick)="editarAluno(aluno)"
+          >
+          </p-button>
+
+          <p-button
+            icon="pi pi-trash"
+            outlined
+            rounded
+            
+            severity="danger"
+            (onClick)="modalExcluir($event, aluno)"
+          >
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</app-card-page>

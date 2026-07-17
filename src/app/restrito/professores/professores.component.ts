@@ -42,8 +42,8 @@ import { ConfirmDialog, ConfirmDialogModule } from "primeng/confirmdialog";
   providers: [ConfirmationService, MessageService]
 })
 export class ProfessoresComponent {
-  loading = false;
   CadProf = false;
+  loading = false;
   editando = false;
 
 idProfessor: string | null = null;
