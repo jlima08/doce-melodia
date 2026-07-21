@@ -70,7 +70,8 @@ idProfessor: string | null = null;
   { label: 'Teclado', value: 'Teclado' },
   { label: 'Bateria', value: 'Bateria' },
   { label: 'Baixo', value: 'Baixo' },
-  { label: 'Canto', value: 'Canto' }
+  { label: 'Canto', value: 'Canto' },
+  { label: 'Musicalização infantil', value: 'Musicalização infantil' }
 ];
 perfis = [
   {
