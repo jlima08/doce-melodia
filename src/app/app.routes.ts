@@ -39,6 +39,12 @@ export const routes: Routes = [
             import('./restrito/aulas/aulas.component')
                 .then(m => m.AulasComponent)
         },
+        {
+            path: 'aulas-detalhes',
+            loadComponent: () =>
+            import('./restrito/aulas/aulas-detalhes/aulas-detalhes.component')
+                .then(m => m.AulasDetalhesComponent)
+        },
         ]
        },
 ]

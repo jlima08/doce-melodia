@@ -119,16 +119,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #000000;
+            background-color: #151412;
         
         .logo{
-            background-color: #000000;
+            background-color: #151412;
             padding: 16px;
             height: 20%;
             display: flex;
             justify-content: center;
             align-items: center;
             // border-radius: 20px;
+            img{
+                width: 50%;
+            }
         }
         .branco{
             display: flex;

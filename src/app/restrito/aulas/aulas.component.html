@@ -1,1 +1,255 @@
-<p>aulas works!</p>
+<p-toast></p-toast>
+
+<app-card-page title="Aulas">
+  <span cardIcon class="material-symbols-outlined"> school </span>
+
+  <p-button
+    [label]="!CadAulas ? 'Nova Aula' : 'Fechar cadastro'"
+    severity="secondary"
+    icon="pi pi-plus"
+    [raised]="true"
+    cardPageRight
+    (onClick)="CadAulas = !CadAulas"
+  >
+  </p-button>
+
+  @if (CadAulas) {
+    <div class="cadastrarMotorista">
+      <h2>
+        <i class="pi pi-info-circle"></i>
+        Informe os dados da aula.
+      </h2>
+
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+        <!-- PROFESSOR -->
+
+        <div>
+          <p-floatlabel>
+            <p-select
+              inputId="professor"
+              class="w-full"
+              formControlName="professor"
+              [options]="professores"
+              optionLabel="nomeCompleto"
+              (onChange)="professorSelecionado()"
+            >
+            </p-select>
+
+            <label for="professor"> Professor </label>
+          </p-floatlabel>
+        </div>
+
+        <!-- ALUNO -->
+
+        <div>
+          <p-floatlabel>
+            <p-select
+              inputId="aluno"
+              class="w-full"
+              formControlName="aluno"
+              [options]="alunos"
+              optionLabel="nomeCompleto"
+            >
+            </p-select>
+
+            <label for="aluno"> Aluno </label>
+          </p-floatlabel>
+        </div>
+
+        <!-- INSTRUMENTO -->
+
+        <div>
+          <p-floatlabel>
+            <p-select
+              inputId="instrumento"
+              class="w-full"
+              formControlName="instrumento"
+              [options]="instrumentosProfessor"
+              optionLabel="label"
+              optionValue="value"
+            >
+            </p-select>
+
+            <label for="instrumento"> Instrumento </label>
+          </p-floatlabel>
+        </div>
+
+        <!-- DIA -->
+
+        <div>
+          <p-floatlabel>
+            <p-select
+              inputId="dia"
+              class="w-full"
+              formControlName="diaSemana"
+              [options]="diasSemana"
+              optionLabel="label"
+              optionValue="value"
+            >
+            </p-select>
+
+            <label for="dia"> Dia da semana </label>
+          </p-floatlabel>
+        </div>
+
+        <!-- HORÁRIO -->
+
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              id="horario"
+              type="time"
+              formControlName="horario"
+            />
+
+            <label for="horario"> Horário </label>
+          </p-floatlabel>
+        </div>
+
+        <!-- BOTÕES -->
+
+        <div class="btn-form">
+          <p-button
+            type="submit"
+            icon="pi pi-save"
+            label="Salvar"
+            severity="secondary"
+            [loading]="loading"
+            [raised]="true"
+          >
+          </p-button>
+
+          <p-button
+            type="button"
+            icon="pi pi-times"
+            label="Cancelar"
+            severity="danger"
+            outlined="true"
+            [raised]="true"
+            (onClick)="CadAulas = false"
+          >
+          </p-button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <div class="filtros">
+    <p-select
+      class="sm:w-[40%] w-full"
+      [(ngModel)]="professorFiltro"
+      [options]="professores"
+      optionLabel="nomeCompleto"
+      placeholder="Professor"
+      (onChange)="filtrarAulas()"
+    >
+    </p-select>
+
+    <p-select
+      class="sm:w-[40%] w-full"
+      [(ngModel)]="diaFiltro"
+      [options]="diasSemana"
+      optionLabel="label"
+      optionValue="value"
+      placeholder="Dia da semana"
+      (onChange)="filtrarAulas()"
+    >
+    </p-select>
+
+    <p-button
+      label="Limpar"
+      icon="pi pi-filter-slash"
+      severity="secondary"
+      outlined
+      (onClick)="limparFiltros()"
+    >
+    </p-button>
+  </div>
+  <!-- TABELA -->
+
+  <p-table
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [value]="aulasFiltradas"
+    stripedRows
+    dataKey="id"
+    [tableStyle]="{ 'min-width': '70rem' }"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Listando {first} a {last} de {totalRecords} aulas"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Professor</th>
+
+        <th>Aluno</th>
+
+        <th>Instrumento</th>
+
+        <th>Dia</th>
+
+        <th>Horário</th>
+
+        <th style="width: 150px">Ações</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-aula>
+      <tr>
+        <td>
+          {{ aula.professorNome }}
+        </td>
+
+        <td>
+          {{ aula.alunoNome }}
+        </td>
+
+        <td>
+          {{ aula.instrumento }}
+        </td>
+
+        <td>
+          {{ aula.diaSemana }}
+        </td>
+
+        <td>
+          {{ aula.horario }}
+        </td>
+
+        <td>
+          <p-button
+            icon="pi pi-eye"
+            rounded
+            outlined
+            size="small"
+            class="ml-1"
+            severity="secondary"
+            routerLink="/restrito/aulas-detalhes"
+          >
+          </p-button>
+
+          <p-button
+            icon="pi pi-pencil"
+            rounded
+            outlined
+            size="small"
+            class="ml-1"
+            severity="info"
+          >
+          </p-button>
+
+          <p-button
+            icon="pi pi-trash"
+            rounded
+            outlined
+            size="small"
+            class="ml-1"
+            severity="danger"
+          >
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</app-card-page>
