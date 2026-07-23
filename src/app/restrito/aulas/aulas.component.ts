@@ -16,10 +16,11 @@ import { TableModule } from "primeng/table";
 import { ToastModule } from "primeng/toast";
 import { InputTextModule } from 'primeng/inputtext';
 import { RouterLink } from "@angular/router";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
 
 @Component({
   selector: 'app-aulas',
-  imports: [CardPageComponent, ButtonModule, FloatLabelModule, InputMaskModule, SelectModule, TableModule, ToastModule, FormsModule, ReactiveFormsModule, InputTextModule, RouterLink],
+  imports: [CardPageComponent, ButtonModule, FloatLabelModule, InputMaskModule, SelectModule, TableModule, ToastModule, FormsModule, ReactiveFormsModule, InputTextModule, RouterLink, ConfirmDialogModule],
   templateUrl: './aulas.component.html',
   styleUrl: './aulas.component.scss',
   providers: [ConfirmationService, MessageService]
@@ -44,6 +45,7 @@ export class AulasComponent {
   private aulasService = inject(AulasService);
 
   private messageService = inject(MessageService);
+  private confirmationService = inject(ConfirmationService)
 
 
   idAula: string | null = null;
@@ -299,6 +301,61 @@ limparFiltros() {
   this.diaFiltro = null;
 
   this.aulasFiltradas = [...this.aulas];
+
+}
+
+async excluirAula(aula: Aula) {
+
+  try {
+
+    await this.aulasService.excluir(aula.id!);
+
+    this.messageService.add({
+      severity:'success',
+      summary:'Aula removida',
+      detail:'Aula excluído com sucesso.'
+    });
+
+  } catch (error) {
+
+    this.messageService.add({
+      severity:'error',
+      summary:'Erro',
+      detail:'Não foi possível excluir.'
+    });
+
+  }
+
+}
+modalExcluir(event: Event, aula: Aula) {
+
+  this.confirmationService.confirm({
+
+    target: event.target as EventTarget,
+
+    message: `Deseja realmente excluir a aula do aluno(a) <b>${aula.alunoNome}</b> ?`,
+
+    header: 'Confirmar exclusão',
+
+    icon: 'pi pi-exclamation-triangle',
+
+    rejectButtonProps: {
+      label: 'Cancelar',
+      severity: 'secondary',
+      outlined: true,
+    },
+
+    acceptButtonProps: {
+      label: 'Excluir',
+      severity: 'danger',
+      icon: 'pi pi-trash',
+    },
+
+    accept: () => {
+      this.excluirAula(aula);
+    }
+
+  });
 
 }
 

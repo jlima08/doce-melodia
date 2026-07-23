@@ -1,4 +1,5 @@
 <p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
 
 <app-card-page title="Aulas">
   <span cardIcon class="material-symbols-outlined"> school </span>
@@ -246,6 +247,7 @@
             size="small"
             class="ml-1"
             severity="danger"
+            (onClick)="modalExcluir($event, aula)"
           >
           </p-button>
         </td>

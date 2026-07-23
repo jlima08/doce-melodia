@@ -9,10 +9,11 @@
 
 .header{
     width: 100%;
-    // padding: 14px;
+    padding: 8px;
     border-bottom: 1px solid #c9ab6ea6;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     h2{
         font-weight: 700;
         letter-spacing: 1.2px;
@@ -26,9 +27,5 @@
 }
 
 @media screen and (max-width: 480px) {
-    .header{
-        flex-direction: column;
-        gap: 20px;
-    }
 
 }
