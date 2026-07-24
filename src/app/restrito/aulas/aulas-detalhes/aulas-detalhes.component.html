@@ -1,3 +1,71 @@
-<app-card-page title="Detalhes das Aulas">
-    
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<app-card-page title="Detalhes das Aulas" icon="pi pi-headphones">
+    <div class="info">
+        <div>
+            <label for="">Professor </label>
+            <input pInputText value="{{aula?.professorNome}}" disabled>            
+        </div>
+        <div>
+            <label for="">Aluno</label>
+            <input pInputText value="{{aula?.alunoNome}}" disabled>
+        </div>
+        <div>
+            <label for="">Dia</label>
+            <input pInputText value="{{aula?.diaSemana}}" disabled>
+        </div>
+        <div>
+            <label for="">Hora</label>
+            <input pInputText value="{{aula?.horario}}" disabled>
+        </div>
+        <div>
+            <label for="">Instrumento</label>
+            <input pInputText value="{{aula?.instrumento}}" disabled>
+        </div>
+        <div>
+            <label for="">Data início</label>
+            <input pInputText value="{{aula?.dataInicio | date: 'dd/MM/yyyy'}}" disabled>
+        </div>
+        <div>
+            <p-button
+            size="large"
+                icon="pi pi-check-circle"
+                label="Marcar Aula"
+                severity="secondary"
+                (onClick)="modalCheck($event)">
+            </p-button>
+        </div>
+    </div>
+
+    <p-table
+     [value]="presencas"
+     [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      stripedRows>
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Data</th>
+            <th>Hora</th>
+        </tr>
+    </ng-template>
+
+    <ng-template
+        pTemplate="body"
+        let-presenca>
+
+        <tr>
+            <td>
+                {{ presenca.dataHora.toDate() | date:'dd/MM/yyyy' }}
+            </td>
+
+            <td>
+                {{ presenca.dataHora.toDate() | date:'HH:mm' }}
+            </td>
+        </tr>
+    </ng-template>
+
+</p-table>   
+
 </app-card-page>

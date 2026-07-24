@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, query, updateDoc, where } from '@angular/fire/firestore';
 import { Professor } from '../models/professor.model';
-import { Observable } from 'rxjs';
-import { updateDoc } from 'firebase/firestore';
+import { map, Observable } from 'rxjs';
+// import { query, updateDoc, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +51,44 @@ buscarPorId(uid: string) {
   return docData(professorRef, {
     idField: 'id'
   });
+}
+buscarPorEmail(email: string) {
+
+  const professoresRef = collection(
+    this.firestore,
+    'professores'
+  );
+
+  const q = query(
+    professoresRef,
+    where('email', '==', email)
+  );
+
+  return collectionData(q, {
+
+    idField: 'id'
+
+  }).pipe(
+
+    map(lista => lista[0] as Professor)
+
+  );
+
+}
+buscarPorUid(uid: string) {
+
+  const professoresRef = collection(this.firestore, 'professores');
+
+  const q = query(
+    professoresRef,
+    where('uid', '==', uid)
+  );
+
+  return collectionData(q, {
+    idField: 'id'
+  }).pipe(
+    map(lista => lista[0] as Professor)
+  );
+
 }
 }

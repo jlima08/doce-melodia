@@ -5,8 +5,10 @@ import {
   doc,
   docData,
   Firestore,
+  query,
   setDoc,
-  updateDoc
+  updateDoc,
+  where
 } from '@angular/fire/firestore';
 
 import { collectionData } from 'rxfire/firestore';
@@ -66,5 +68,19 @@ export class AulasService {
     }) as Observable<Aula>;
 
   }
+  listarPorProfessor(professorId: string) {
+
+  const aulasRef = collection(this.firestore, 'aulas');
+
+  const q = query(
+    aulasRef,
+    where('professorId', '==', professorId)
+  );
+
+  return collectionData(q, {
+    idField: 'id'
+  }) as Observable<Aula[]>;
+
+}
 
 }

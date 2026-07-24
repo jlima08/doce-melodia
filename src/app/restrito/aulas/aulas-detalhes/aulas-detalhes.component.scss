@@ -1,0 +1,27 @@
+.info{
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 10px;
+    div{
+        width: 16%;
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        label{
+            margin-left: 6px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .info{
+        flex-direction: column;
+        align-items: start;
+        div{
+            width: 100%;
+        }
+    }
+}

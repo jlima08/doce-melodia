@@ -1,0 +1,21 @@
+.perfil{
+    width: 50%;
+    flex-wrap: wrap;
+    gap: 10px;
+    display: flex;
+    padding: 10px;
+    .campo{
+        display: flex;
+        flex-direction: column;
+        label{
+            font-weight: 600;
+            margin-left: 5px;
+        }
+    }
+}
+form{
+    padding: 10px;
+    display: flex;
+    gap: 18px;
+    flex-direction: column;
+}

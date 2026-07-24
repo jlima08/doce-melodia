@@ -40,10 +40,16 @@ export const routes: Routes = [
                 .then(m => m.AulasComponent)
         },
         {
-            path: 'aulas-detalhes',
+            path: 'aulas-detalhes/:id',
             loadComponent: () =>
             import('./restrito/aulas/aulas-detalhes/aulas-detalhes.component')
                 .then(m => m.AulasDetalhesComponent)
+        },
+        {
+            path: 'minha-conta',
+            loadComponent: () =>
+            import('./restrito/minha-conta/minha-conta.component')
+                .then(m => m.MinhaContaComponent)
         },
         ]
        },

@@ -4,15 +4,18 @@
 <app-card-page title="Aulas">
   <span cardIcon class="material-symbols-outlined"> school </span>
 
-  <p-button
-    [label]="!CadAulas ? 'Nova Aula' : 'Fechar cadastro'"
-    severity="secondary"
-    icon="pi pi-plus"
-    [raised]="true"
-    cardPageRight
-    (onClick)="CadAulas = !CadAulas"
-  >
-  </p-button>
+  @if( usuario.admin ){
+    <p-button
+      [label]="!CadAulas ? 'Nova Aula' : 'Fechar cadastro'"
+      severity="secondary"
+      icon="pi pi-plus"
+      [raised]="true"
+      cardPageRight
+      (onClick)="CadAulas = !CadAulas"
+    >
+    </p-button>
+    
+  }
 
   @if (CadAulas) {
     <div class="cadastrarMotorista">
@@ -107,6 +110,18 @@
             <label for="horario"> Horário </label>
           </p-floatlabel>
         </div>
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              id="horario"
+              type="date"
+              formControlName="dataInicio"
+            />
+
+            <label for="horario"> Data de inicio </label>
+          </p-floatlabel>
+        </div>
 
         <!-- BOTÕES -->
 
@@ -128,7 +143,7 @@
             severity="danger"
             outlined="true"
             [raised]="true"
-            (onClick)="CadAulas = false"
+            (onClick)="btnCancelar()"
           >
           </p-button>
         </div>
@@ -137,6 +152,7 @@
   }
 
   <div class="filtros">
+    @if(usuario.admin ){
     <p-select
       class="sm:w-[40%] w-full"
       [(ngModel)]="professorFiltro"
@@ -146,6 +162,7 @@
       (onChange)="filtrarAulas()"
     >
     </p-select>
+  }
 
     <p-select
       class="sm:w-[40%] w-full"
@@ -191,6 +208,7 @@
         <th>Dia</th>
 
         <th>Horário</th>
+        <th>Data de Início</th>
 
         <th style="width: 150px">Ações</th>
       </tr>
@@ -217,6 +235,9 @@
         <td>
           {{ aula.horario }}
         </td>
+        <td>
+          {{ aula.dataInicio | date: 'dd/MM/yyyy' }}
+        </td>
 
         <td>
           <p-button
@@ -226,7 +247,7 @@
             size="small"
             class="ml-1"
             severity="secondary"
-            routerLink="/restrito/aulas-detalhes"
+            [routerLink]="['/restrito/aulas-detalhes', aula.id]"
           >
           </p-button>
 
@@ -237,6 +258,7 @@
             size="small"
             class="ml-1"
             severity="info"
+            (onClick)="editarAula(aula)"
           >
           </p-button>
 

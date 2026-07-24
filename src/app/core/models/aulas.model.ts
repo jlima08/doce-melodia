@@ -16,4 +16,6 @@ export interface Aula {
 
   horario: string;
 
+  dataInicio: string;
+
 }

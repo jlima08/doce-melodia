@@ -7,7 +7,6 @@
     <div class="logo">
       <img src="/logo02.png" alt="" srcset="" />
     </div>
-    <!-- <p class="title">Administrador</p> -->
     <div class="links">
       
       <a routerLinkActive="link-ativo"
@@ -16,29 +15,29 @@
         <span class="material-symbols-outlined">school</span>
          Aulas
       </a>
-      <a
+      @if (usuario.admin) {        
+        <a
         routerLinkActive="link-ativo"
         (click)="fecharSidebarMobile()"
-        routerLink="/restrito/professores"
-        ><span class="material-symbols-outlined">artist</span>
-         Professores</a
-      >
+        routerLink="/restrito/professores">
+        <span class="material-symbols-outlined">artist</span>
+        Professores
+      </a>
       
-      <!-- <a routerLinkActive="link-ativo" (click)="fecharSidebarMobile()" routerLink="/restrito/relatorio"><i class="pi pi-file"></i> Relatórios</a> -->
-      
-        <a
+      <a
           routerLinkActive="link-ativo "
           (click)="fecharSidebarMobile()"
-          routerLink="/restrito/alunos"
-          ><span class="material-symbols-outlined">group</span>
-           Alunos</a
-        >
+          routerLink="/restrito/alunos">
+          <span class="material-symbols-outlined">group</span>
+          Alunos
+        </a>
+      }
       
       <a
         routerLinkActive="link-ativo"
         (click)="fecharSidebarMobile()"
         routerLink="/restrito/minha-conta"
-        ><i class="pi pi-user-edit"></i> Minha conta</a
+        ><span class="material-symbols-outlined">manage_accounts</span> Minha conta</a
       >
     </div>
     <div class="sidebar-end">
@@ -46,8 +45,8 @@
         <div class="user">
           <p-avatar
             [label]="getIniciais(usuario?.nome, usuario?.sobrenome)"
-            styleClass="ml-2"
-            size="normal"
+            class="!bg-[#8e6f32] !text-white"
+            size="large"
           />
           <div class="flex flex-col overflow-hidden">
             <p
@@ -56,7 +55,7 @@
             >
               {{ usuario?.nome }} {{ usuario?.sobrenome }}
             </p>
-            <p>
+            <p class="text-sm">
               {{ usuario?.admin ? 'Administrador' : 'Professor' }}
             </p>
           </div>

@@ -1,0 +1,76 @@
+<p-toast></p-toast>
+
+<app-card-page title="Minha Conta">
+
+    <div class="perfil">
+
+        <div class="campo">
+            <label>Nome</label>
+            <input
+                pInputText
+                [value]="professor?.nome + ' ' + professor?.sobrenome"
+                disabled>
+        </div>
+
+        <div class="campo">
+            <label>Email</label>
+            <input
+                pInputText
+                [value]="professor?.email"
+                disabled>
+        </div>
+
+        <div class="campo">
+            <label>Perfil</label>
+            <input
+                pInputText
+                [value]="professor?.admin ? 'Administrador' : 'Professor'"
+                disabled>
+        </div>
+
+        <div class="campo sm:w-[425px]">
+            <label>Instrumentos</label>
+            <textarea rows="3"cols="30" pTextarea [autoResize]="true"
+                [value]="professor?.instrumentos?.join(', ')" disabled>
+            </textarea>
+                
+        </div>
+
+    </div>
+
+    <form
+        [formGroup]="form"
+        (ngSubmit)="alterarSenha()">
+
+        <p-floatlabel>
+
+            <input
+                pInputText
+                type="password"
+                formControlName="senha">
+
+            <label>Nova senha</label>
+
+        </p-floatlabel>
+
+        <p-floatlabel>
+
+            <input
+                pInputText
+                type="password"
+                formControlName="confirmarSenha">
+
+            <label>Confirmar senha</label>
+
+        </p-floatlabel>
+
+        <p-button
+            type="submit"
+            label="Alterar senha"
+            icon="pi pi-save"
+            [loading]="loading">
+        </p-button>
+
+    </form>
+
+</app-card-page>
