@@ -44,13 +44,14 @@ async excluir(id: string) {
 
 }
 
-buscarPorId(uid: string) {
+buscarPorId(uid: string): Observable<Professor> {
 
   const professorRef = doc(this.firestore, 'professores', uid);
 
   return docData(professorRef, {
     idField: 'id'
-  });
+  }) as Observable<Professor>;
+
 }
 buscarPorEmail(email: string) {
 
@@ -75,20 +76,5 @@ buscarPorEmail(email: string) {
   );
 
 }
-buscarPorUid(uid: string) {
 
-  const professoresRef = collection(this.firestore, 'professores');
-
-  const q = query(
-    professoresRef,
-    where('uid', '==', uid)
-  );
-
-  return collectionData(q, {
-    idField: 'id'
-  }).pipe(
-    map(lista => lista[0] as Professor)
-  );
-
-}
 }

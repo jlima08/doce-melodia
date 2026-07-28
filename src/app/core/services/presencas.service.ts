@@ -22,19 +22,17 @@ export class PresencasService {
 
   private firestore = inject(Firestore);
 
-  marcar(aulaId: string, professorId: string, alunoId: string) {
+  marcar(aulaId: string, professorId: string, alunoId: string, reposicao:boolean) {
 
     const presencasRef = collection(this.firestore, 'presencas');
 
     return addDoc(presencasRef, {
 
       aulaId,
-
       professorId,
-
       alunoId,
-
-      dataHora: Timestamp.now()
+      dataHora: Timestamp.now(),
+      reposicao
 
     });
 

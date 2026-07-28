@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -41,7 +46,7 @@ import { AuthService } from '../../core/services/auth.service';
     InputTextModule,
     RouterLink,
     ConfirmDialogModule,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './aulas.component.html',
   styleUrl: './aulas.component.scss',
@@ -53,25 +58,23 @@ export class AulasComponent {
   loading = false;
 
   btnCancelar() {
+    this.form.reset({
+      professor: null,
+      aluno: null,
+      instrumento: '',
+      diaSemana: '',
+      horario: '14:00',
+      dataInicio: '2026-01-01',
+    });
 
-  this.form.reset({
-    professor: null,
-    aluno: null,
-    instrumento: '',
-    diaSemana: '',
-    horario: '14:00',
-    dataInicio: '2026-01-01'
-  });
+    this.instrumentosProfessor = [];
 
-  this.instrumentosProfessor = [];
+    this.editando = false;
 
-  this.editando = false;
+    this.idAula = null;
 
-  this.idAula = null;
-
-  this.CadAulas = false;
-
-}
+    this.CadAulas = false;
+  }
 
   private fb = inject(FormBuilder);
   private professoresService = inject(ProfessoresService);
@@ -79,15 +82,15 @@ export class AulasComponent {
   private aulasService = inject(AulasService);
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
-  private auth = inject(Auth);
+  // private auth = inject(Auth);
   private authService = inject(AuthService);
 
   idAula: string | null = null;
   professores: Professor[] = [];
-  professor?: Professor
+  professor?: Professor;
   alunos: Aluno[] = [];
   aulas: Aula[] = [];
-  usuario: any
+  usuario: any;
 
   professorFiltro: Professor | null = null;
   diaFiltro: string | null = null;
@@ -114,70 +117,41 @@ export class AulasComponent {
   });
 
   ngOnInit() {
-   this.buscarProfessores();
-  this.buscarAlunos();
-  
-  const authUser = this.authService.usuarioLogado();
-  if (!authUser) return;
+    this.buscarProfessores();
+    this.buscarAlunos();
 
-  this.professoresService
-      .buscarPorId(authUser.uid)
-      .subscribe(usuario => {
+    const authUser = this.authService.usuarioLogado();
 
-        this.usuario = usuario;
+    if (!authUser) return;
 
-      });
-
-    
-  
-
-  const email = this.auth.currentUser?.email;
-
-  if (!email) return;
-  
-  this.professoresService
-    .buscarPorEmail(email)
-    .subscribe(professor => {
-
-      if (!professor) return;
+    this.professoresService.buscarPorId(authUser.uid).subscribe((professor) => {
+      this.usuario = professor;
+      this.professor = professor;
 
       if (professor.admin) {
-
         this.buscarAulas();
-
       } else {
-
         this.buscarAulasProfessor(professor.id!);
-
       }
-
     });
   }
-  usuarioLogado() {
-    return this.auth.currentUser;
-  }
+  // usuarioLogado() {
+  //   return this.auth.currentUser;
+  // }
   buscarAulasProfessor(professorId: string) {
-
-  this.aulasService
-    .listarPorProfessor(professorId)
-    .subscribe(aulas => {
-
+    this.aulasService.listarPorProfessor(professorId).subscribe((aulas) => {
       this.aulas = aulas;
       this.aulasFiltradas = [...aulas];
-
     });
-
-}
+  }
 
   buscarProfessores() {
-    
     this.professoresService.listar().subscribe((professores) => {
-      
       this.professores = professores.map((professor) => ({
         ...professor,
         nomeCompleto: `${professor.nome} ${professor.sobrenome}`,
       }));
-      this.professores = professores
+
     });
   }
 
@@ -245,58 +219,52 @@ export class AulasComponent {
 
       const aulas = await firstValueFrom(this.aulasService.listar());
 
-// Aluno já possui aula nesse horário?
-const conflitoAluno = aulas.some(a =>
-  a.alunoId === aula.alunoId &&
-  a.diaSemana === aula.diaSemana &&
-  a.horario === aula.horario &&
-  a.id !== this.idAula
-);
+      // Aluno já possui aula nesse horário?
+      const conflitoAluno = aulas.some(
+        (a) =>
+          a.alunoId === aula.alunoId &&
+          a.diaSemana === aula.diaSemana &&
+          a.horario === aula.horario &&
+          a.id !== this.idAula,
+      );
 
-if (conflitoAluno) {
+      if (conflitoAluno) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Conflito de horário',
+          detail: 'O aluno já possui uma aula nesse dia e horário.',
+        });
 
-  this.messageService.add({
-    severity: 'warn',
-    summary: 'Conflito de horário',
-    detail: 'O aluno já possui uma aula nesse dia e horário.'
-  });
+        this.loading = false;
+        return;
+      }
 
-  this.loading = false;
-  return;
-}
+      // Professor já possui aula nesse horário?
+      const conflitoProfessor = aulas.some(
+        (a) =>
+          a.professorId === aula.professorId &&
+          a.diaSemana === aula.diaSemana &&
+          a.horario === aula.horario &&
+          a.id !== this.idAula,
+      );
 
-// Professor já possui aula nesse horário?
-const conflitoProfessor = aulas.some(a =>
-  a.professorId === aula.professorId &&
-  a.diaSemana === aula.diaSemana &&
-  a.horario === aula.horario &&
-  a.id !== this.idAula
-);
+      if (conflitoProfessor) {
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Conflito de horário',
+          detail: 'O professor já possui uma aula nesse dia e horário.',
+        });
 
-if (conflitoProfessor) {
-
-  this.messageService.add({
-    severity: 'warn',
-    summary: 'Conflito de horário',
-    detail: 'O professor já possui uma aula nesse dia e horário.'
-  });
-
-  this.loading = false;
-  return;
-}
+        this.loading = false;
+        return;
+      }
 
       if (this.editando) {
-        await this.aulasService.editar(
-          this.idAula!,
-          aula,
-        );
+        await this.aulasService.editar(this.idAula!, aula);
       } else {
         const id = crypto.randomUUID();
 
-        await this.aulasService.cadastrar(
-          id,
-          aula,
-        );
+        await this.aulasService.cadastrar(id, aula);
       }
 
       this.messageService.add({
@@ -311,7 +279,7 @@ if (conflitoProfessor) {
         instrumento: '',
         diaSemana: '',
         horario: '14:00',
-        dataInicio: '2026-01-01'
+        dataInicio: '2026-01-01',
       });
 
       this.instrumentosProfessor = [];
@@ -412,6 +380,4 @@ if (conflitoProfessor) {
       horario: aula.horario,
     });
   }
-  
-
 }

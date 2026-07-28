@@ -15,6 +15,13 @@
         }
     }
 }
+th{
+    background-color: var(--dourado) !important;
+    color: #ffffff !important;
+}
+th:hover{
+    background-color: #614b1f !important;
+}
 
 @media screen and (max-width: 600px) {
     .info{
