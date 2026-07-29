@@ -88,6 +88,52 @@
             <label> Data de nascimento </label>
           </p-floatlabel>
         </div>
+        <div class="checkbox ">
+          <p-checkbox
+          styleClass="w-10"
+            formControlName="menorIdade"
+            [binary]="true"
+            inputId="menorIdade">
+          </p-checkbox>
+
+          <label for="menorIdade" >
+            Menor de idade
+          </label>
+        </div>
+        @if (form.value.menorIdade) {
+
+  <div>
+    <p-floatlabel>
+      <input
+        pInputText
+        id="nomeResponsavel"
+        formControlName="nomeResponsavel" />
+
+      <label for="nomeResponsavel">
+        Nome do responsável
+      </label>
+    </p-floatlabel>
+  </div>
+
+  <div>
+    <p-floatlabel>
+
+      <p-inputMask
+        styleClass="w-full"
+        mask="(99) 99999-9999"
+        formControlName="contatoResponsavel"
+        inputId="contatoResponsavel">
+
+      </p-inputMask>
+
+      <label for="contatoResponsavel">
+        Contato do responsável
+      </label>
+
+    </p-floatlabel>
+  </div>
+
+}
 
         <div class="btn-form">
           <p-button
@@ -125,6 +171,8 @@
         <th pSortableColumn="nome">Nome <p-sortIcon field="nome" /> </th>
         <th>CPF</th>
         <th>Contato</th>
+        <th>Menor de idade</th>
+        <th>Contato do Responsável</th>
         <th>Data Nascimento</th>
         <th style="width: 150px">Ações</th>
       </tr>
@@ -144,7 +192,17 @@
         <td>
           {{ aluno.contato }}
         </td>
+        <td>
+          @if (aluno.menorIdade) {
+            <p-tag severity="info" value="Sim"> </p-tag>
+          } @else {
+            <p-tag severity="warn" value="Não"> </p-tag>
+          }
+        </td>
 
+        <td>
+          {{ aluno.contatoResponsavel}}
+        </td>
         <td>
           {{ aluno.dataNascimento.toDate() | date: "dd/MM/yyyy" }}
         </td>

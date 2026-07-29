@@ -5,4 +5,7 @@ export interface Aluno {
   cpf: string;
   contato: string;
   dataNascimento: string;
+  menorIdade: boolean;
+  nomeResponsavel?: string;
+  contatoResponsavel?: string;
 }

@@ -20,6 +20,8 @@ import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { ConfirmDialogModule } from "primeng/confirmdialog";
 import { ToastModule } from "primeng/toast";
+import { CheckboxModule } from 'primeng/checkbox';
+import { TagModule } from "primeng/tag";
 
 @Component({
   selector: 'app-alunos',
@@ -37,7 +39,9 @@ import { ToastModule } from "primeng/toast";
     ButtonModule,
     CommonModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    CheckboxModule,
+    TagModule
 ],
   templateUrl: './alunos.component.html',
   styleUrl: './alunos.component.scss',
@@ -62,6 +66,11 @@ export class AlunosComponent {
     cpf: ['', Validators.required],
     contato: ['', Validators.required],
     dataNascimento: ['', Validators.required],
+     menorIdade: [false],
+
+  nomeResponsavel: [''],
+
+  contatoResponsavel: ['']
   });
 
   ngOnInit() {
@@ -74,6 +83,30 @@ export class AlunosComponent {
         console.error(erro);
       },
     });
+    this.form.get('menorIdade')?.valueChanges.subscribe(menor => {
+
+  const nome = this.form.get('nomeResponsavel');
+  const contato = this.form.get('contatoResponsavel');
+
+  if (menor) {
+
+    nome?.setValidators(Validators.required);
+    contato?.setValidators(Validators.required);
+
+  } else {
+
+    nome?.clearValidators();
+    contato?.clearValidators();
+
+    nome?.setValue('');
+    contato?.setValue('');
+
+  }
+
+  nome?.updateValueAndValidity();
+  contato?.updateValueAndValidity();
+
+});
   }
 
   btnCancelar(){
@@ -100,6 +133,11 @@ export class AlunosComponent {
     try {
       const aluno = this.form.getRawValue();
 
+       if (!aluno.menorIdade) {
+      aluno.nomeResponsavel = '';
+      aluno.contatoResponsavel = '';
+    }
+
       if (this.editando) {
         await this.alunosService.editar(this.idAluno!, aluno);
 
@@ -121,12 +159,15 @@ export class AlunosComponent {
       }
 
       this.form.reset({
-        nome: '',
-        sobrenome: '',
-        cpf: '',
-        contato: '',
-        dataNascimento: '',
-      });
+  nome: '',
+  sobrenome: '',
+  cpf: '',
+  contato: '',
+  dataNascimento: '',
+  menorIdade: false,
+  nomeResponsavel: '',
+  contatoResponsavel: ''
+});
 
       this.editando = false;
       this.idAluno = null;
@@ -151,12 +192,16 @@ export class AlunosComponent {
     this.CadAluno = true;
 
     this.form.patchValue({
-      nome: aluno.nome,
-      sobrenome: aluno.sobrenome,
-      cpf: aluno.cpf,
-      contato: aluno.contato,
-      dataNascimento: aluno.dataNascimento,
-    });
+  nome: aluno.nome,
+  sobrenome: aluno.sobrenome,
+  cpf: aluno.cpf,
+  contato: aluno.contato,
+  dataNascimento: aluno.dataNascimento,
+
+  menorIdade: aluno.menorIdade,
+  nomeResponsavel: aluno.nomeResponsavel ?? '',
+  contatoResponsavel: aluno.contatoResponsavel ?? ''
+});
   }
   async excluirAluno(aluno: Aluno) {
     try {

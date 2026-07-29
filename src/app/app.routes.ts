@@ -46,6 +46,12 @@ export const routes: Routes = [
                 .then(m => m.AulasDetalhesComponent)
         },
         {
+            path: 'cobrancas',
+            loadComponent: () =>
+            import('./restrito/cobrancas/cobrancas.component')
+                .then(m => m.CobrancasComponent)
+        },
+        {
             path: 'minha-conta',
             loadComponent: () =>
             import('./restrito/minha-conta/minha-conta.component')

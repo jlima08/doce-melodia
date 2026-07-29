@@ -1,0 +1,278 @@
+<p-dialog
+  header="Confirmar pagamento"
+  [(visible)]="mostrarModalPagamento"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+>
+  <p>
+    Aluno:
+
+    <b>{{ cobrancaSelecionada?.alunoNome }}</b>
+  </p>
+
+  <p>
+    Valor:
+
+    <b>{{ cobrancaSelecionada?.valor | currency: "BRL" }}</b>
+  </p>
+
+  <div class="mt-4">
+    <p-floatlabel>
+      <p-datepicker
+        appendTo="body"
+        [(ngModel)]="proximoVencimento"
+        dateFormat="dd/mm/yy"
+        showIcon
+      >
+      </p-datepicker>
+
+      <label> Próximo vencimento </label>
+    </p-floatlabel>
+  </div>
+
+  <div class="flex justify-end gap-2 mt-4">
+    <p-button
+      label="Cancelar"
+      severity="secondary"
+      (click)="mostrarModalPagamento = false"
+    >
+    </p-button>
+
+    <p-button
+      label="Confirmar"
+      icon="pi pi-check"
+      (click)="confirmarPagamento()"
+    >
+    </p-button>
+  </div>
+</p-dialog>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<app-card-page title="Cobranças" icon="pi pi-wallet">
+  <p-button
+    [label]="!CadCobrancas ? 'Nova Cobrança' : 'Fechar cadastro'"
+    severity="secondary"
+    [icon]="!CadCobrancas ? 'pi pi-plus' : 'pi pi-times'"
+    [raised]="true"
+    cardPageRight
+    (onClick)="CadCobrancas = !CadCobrancas"
+  >
+  </p-button>
+  @if (CadCobrancas) {
+    <div class="cadastrarMotorista">
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+        <div>
+          <p-floatlabel>
+            <p-select
+              styleClass="w-full"
+              inputId="aluno"
+              formControlName="aluno"
+              [options]="alunos"
+              optionLabel="nomeCompleto"
+              placeholder=""
+              (onChange)="alunoSelecionado()"
+            >
+            </p-select>
+
+            <label for="aluno">Aluno</label>
+          </p-floatlabel>
+
+          @if (form.get("aluno")?.invalid && form.get("aluno")?.touched) {
+            <small class="text-red-500"> Selecione um aluno. </small>
+          }
+        </div>
+
+        <div>
+          <p-floatlabel>
+            <p-inputMask
+              inputId="contato"
+              formControlName="contato"
+              mask="(99) 99999-9999"
+              styleClass="w-full"
+              [readonly]="true"
+            >
+            </p-inputMask>
+
+            <label for="contato"> Contato </label>
+          </p-floatlabel>
+        </div>
+
+        <div>
+          <p-floatlabel>
+            <input
+              pInputText
+              type="number"
+              inputId="valor"
+              formControlName="valor"
+            />
+
+            <label for="valor"> Valor (R$) </label>
+          </p-floatlabel>
+
+          @if (form.get("valor")?.invalid && form.get("valor")?.touched) {
+            <small class="text-red-500"> Informe o valor. </small>
+          }
+        </div>
+
+        <div>
+          <p-floatlabel>
+            <p-datepicker
+              inputId="vencimento"
+              formControlName="vencimento"
+              dateFormat="dd/mm/yy"
+              showIcon
+            >
+            </p-datepicker>
+
+            <label for="vencimento"> Data de vencimento </label>
+          </p-floatlabel>
+
+          @if (
+            form.get("vencimento")?.invalid && form.get("vencimento")?.touched
+          ) {
+            <small class="text-red-500"> Informe a data de vencimento. </small>
+          }
+        </div>
+
+        <div class="btn-form">
+          <p-button
+            type="submit"
+            icon="pi pi-save"
+            [label]="editando ? 'Atualizar' : 'Salvar'"
+            severity="secondary"
+            [loading]="loading"
+          >
+          </p-button>
+
+          <p-button
+            type="button"
+            icon="pi pi-times"
+            label="Cancelar"
+            severity="danger"
+            outlined="true"
+            (click)="btnCancelar()"
+          >
+          </p-button>
+        </div>
+      </form>
+    </div>
+  }
+  <div class=" mt-2">
+    <div class="flex flex-col sm:flex-row gap-3">
+
+    <p-select
+        class="sm:w-80"
+        [(ngModel)]="alunoFiltro"
+        [options]="alunos"
+        optionLabel="nomeCompleto"
+        placeholder="Aluno"
+        (onChange)="filtrarCobrancas()">
+    </p-select>
+
+    <p-select
+        class="w-60"
+        [(ngModel)]="statusFiltro"
+        [options]="status"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Status"
+        (onChange)="filtrarCobrancas()">
+    </p-select>
+
+    <p-button
+        icon="pi pi-filter-slash"
+        label="Limpar"
+        outlined
+        severity="secondary"
+        (click)="limparFiltros()">
+    </p-button>
+
+</div>
+  </div>
+
+  <p-table 
+  [value]="cobrancasFiltradas" 
+  responsiveLayout="scroll" 
+  stripedRows
+  [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Aluno</th>
+
+        <th>Contato</th>
+
+        <th>Valor</th>
+
+        <th>Vencimento</th>
+
+        <th>Status</th>
+
+        <th style="width: 220px">Ações</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-cobranca>
+      <tr>
+        <td>{{ cobranca.alunoNome }}</td>
+
+        <td>{{ cobranca.contato }}</td>
+
+        <td>{{ cobranca.valor | currency: "BRL" }}</td>
+
+        <td>{{ cobranca.vencimento.toDate() | date: "dd/MM/yyyy" }}</td>
+
+        <td>
+          @if (cobranca.pago) {
+            <p-tag severity="success" value="Pago"> </p-tag>
+          } @else {
+            <p-tag severity="danger" value="Pendente"> </p-tag>
+          }
+        </td>
+
+        <td>
+          <div class="flex gap-2">
+            <p-button
+              icon="pi pi-pencil"
+              severity="secondary"
+              rounded
+              outlined
+              (click)="editarCobranca(cobranca)"
+            >
+            </p-button>
+
+            @if (!cobranca.pago) {
+              <p-button
+                icon="pi pi-check"
+                severity="success"
+                rounded
+                outlined
+                (click)="modalPagamento(cobranca)"
+              >
+              </p-button>
+            }
+
+            <p-button
+              icon="pi pi-whatsapp"
+              severity="success"
+              rounded
+              (click)="enviarWhatsapp(cobranca)"
+            >
+            </p-button>
+
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              rounded
+              outlined
+              (click)="modalExcluir($event, cobranca)"
+            >
+            </p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</app-card-page>
