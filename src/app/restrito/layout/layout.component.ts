@@ -10,6 +10,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { ProfessoresService } from '../../core/services/professores.service';
+import { environment } from '../../environments';
 
 @Component({
   selector: 'app-layout',
@@ -29,6 +30,8 @@ private auth = inject(Auth);
 open = false;
 private timeout: any;
 usuario: any;
+
+version = environment.version;
 
 ngOnInit(): void {
 
