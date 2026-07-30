@@ -234,6 +234,7 @@
 
         <td>
           <div class="flex gap-2">
+          @if (!cobranca.pago) {
             <p-button
               icon="pi pi-pencil"
               severity="secondary"
@@ -243,7 +244,6 @@
             >
             </p-button>
 
-            @if (!cobranca.pago) {
               <p-button
                 icon="pi pi-check"
                 severity="success"
@@ -252,15 +252,15 @@
                 (click)="modalPagamento(cobranca)"
               >
               </p-button>
-            }
-
-            <p-button
+              
+              <p-button
               icon="pi pi-whatsapp"
               severity="success"
               rounded
               (click)="enviarWhatsapp(cobranca)"
             >
             </p-button>
+          }
 
             <p-button
               icon="pi pi-trash"

@@ -10,41 +10,67 @@ import {
 } from '@angular/fire/firestore';
 
 import { Aluno } from '../models/aluno.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlunosService {
-  private firestore = inject(Firestore);
+   private firestore = inject(Firestore);
 
- listar(): Observable<Aluno[]> {
+  private alunosCache = new BehaviorSubject<Aluno[]>([]);
+  private carregado = false;
 
-  const alunosRef = collection(this.firestore, 'alunos');
+  listar(): Observable<Aluno[]> {
 
-  return collectionData(alunosRef, {
-    idField: 'id'
-  }) as Observable<Aluno[]>;
+    if (!this.carregado) {
 
-}
+      const alunosRef = collection(this.firestore, 'alunos');
 
-  cadastrar(id: string, aluno: Aluno) {
-    const alunoRef = doc(this.firestore, 'alunos', id);
+      collectionData(alunosRef, {
+        idField: 'id'
+      }).subscribe(alunos => {
 
-    return setDoc(alunoRef, aluno);
+        this.alunosCache.next(alunos as Aluno[]);
+        this.carregado = true;
+
+      });
+
+    }
+
+    return this.alunosCache.asObservable();
+
   }
 
-  editar(id: string, aluno: Aluno) {
+  async cadastrar(id: string, aluno: Aluno) {
+
     const alunoRef = doc(this.firestore, 'alunos', id);
 
-    return updateDoc(alunoRef, {
+    await setDoc(alunoRef, aluno);
+
+    this.carregado = false;
+
+  }
+
+  async editar(id: string, aluno: Aluno) {
+
+    const alunoRef = doc(this.firestore, 'alunos', id);
+
+    await updateDoc(alunoRef, {
       ...aluno,
     });
+
+    this.carregado = false;
+
   }
 
-  excluir(id: string) {
+  async excluir(id: string) {
+
     const alunoRef = doc(this.firestore, 'alunos', id);
 
-    return deleteDoc(alunoRef);
+    await deleteDoc(alunoRef);
+
+    this.carregado = false;
+
   }
 }

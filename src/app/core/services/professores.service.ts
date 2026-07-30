@@ -1,8 +1,19 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, deleteDoc, doc, docData, Firestore, setDoc, query, updateDoc, where } from '@angular/fire/firestore';
+import {
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  docData,
+  Firestore,
+  query,
+  setDoc,
+  updateDoc,
+  where
+} from '@angular/fire/firestore';
+
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { Professor } from '../models/professor.model';
-import { map, Observable } from 'rxjs';
-// import { query, updateDoc, where } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -11,70 +22,124 @@ export class ProfessoresService {
 
   private firestore = inject(Firestore);
 
-  async cadastrar(uid: string, professor: Professor) {
-  const professorRef = doc(this.firestore, 'professores', uid);
-  return setDoc(professorRef, professor);
-}
+  private professoresCache = new BehaviorSubject<Professor[]>([]);
+  private carregado = false;
 
   listar(): Observable<Professor[]> {
 
-    const professoresRef = collection(this.firestore, 'professores');
+    if (!this.carregado) {
 
-    return collectionData(professoresRef, {
-      idField: 'id'
-    }) as Observable<Professor[]>;
+      const professoresRef = collection(this.firestore, 'professores');
+
+      collectionData(professoresRef, {
+        idField: 'id'
+      }).subscribe(professores => {
+
+        this.professoresCache.next(professores as Professor[]);
+        this.carregado = true;
+
+      });
+
+    }
+
+    return this.professoresCache.asObservable();
+
+  }
+
+  async cadastrar(uid: string, professor: Professor) {
+
+    const professorRef = doc(this.firestore, 'professores', uid);
+
+    await setDoc(professorRef, professor);
+
+    this.professoresCache.next([
+      ...this.professoresCache.value,
+      {
+        id: uid,
+        ...professor
+      }
+    ]);
 
   }
 
   async editar(id: string, professor: Professor) {
 
-  const professorRef = doc(this.firestore, `professores/${id}`);
+    const professorRef = doc(this.firestore, `professores/${id}`);
 
-  return updateDoc(professorRef, {
-    ...professor
-  });
+    await updateDoc(professorRef, {
+      ...professor
+    });
 
-}
+    this.professoresCache.next(
 
-async excluir(id: string) {
+      this.professoresCache.value.map(p =>
 
-  const professorRef = doc(this.firestore, `professores/${id}`);
+        p.id === id
+          ? { id, ...professor }
+          : p
 
-  return deleteDoc(professorRef);
+      )
 
-}
+    );
 
-buscarPorId(uid: string): Observable<Professor> {
+  }
 
-  const professorRef = doc(this.firestore, 'professores', uid);
+  async excluir(id: string) {
 
-  return docData(professorRef, {
-    idField: 'id'
-  }) as Observable<Professor>;
+    const professorRef = doc(this.firestore, `professores/${id}`);
 
-}
-buscarPorEmail(email: string) {
+    await deleteDoc(professorRef);
 
-  const professoresRef = collection(
-    this.firestore,
-    'professores'
-  );
+    this.professoresCache.next(
 
-  const q = query(
-    professoresRef,
-    where('email', '==', email)
-  );
+      this.professoresCache.value.filter(p => p.id !== id)
 
-  return collectionData(q, {
+    );
 
-    idField: 'id'
+  }
 
-  }).pipe(
+  buscarPorId(uid: string): Observable<Professor> {
 
-    map(lista => lista[0] as Professor)
+    const professorRef = doc(this.firestore, 'professores', uid);
 
-  );
+    return docData(professorRef, {
+      idField: 'id'
+    }) as Observable<Professor>;
 
-}
+  }
+
+  buscarPorEmail(email: string) {
+
+    // Procura primeiro no cache
+    const professor = this.professoresCache.value.find(
+      p => p.email === email
+    );
+
+    if (professor) {
+
+      return new Observable<Professor>(observer => {
+
+        observer.next(professor);
+        observer.complete();
+
+      });
+
+    }
+
+    // Caso ainda não esteja carregado
+    const professoresRef = collection(this.firestore, 'professores');
+
+    const q = query(
+      professoresRef,
+      where('email', '==', email)
+    );
+
+    return collectionData(q, {
+      idField: 'id'
+    }).pipe(
+      map(lista => lista[0] as Professor)
+    );
+
+  }
 
 }

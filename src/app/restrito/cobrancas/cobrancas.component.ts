@@ -55,72 +55,53 @@ import { TagModule } from 'primeng/tag';
   providers: [ConfirmationService, MessageService],
 })
 export class CobrancasComponent {
+
   private fb = inject(FormBuilder);
-
   private alunosService = inject(AlunosService);
-
   private cobrancasService = inject(CobrancasService);
-
   private messageService = inject(MessageService);
-
   private confirmationService = inject(ConfirmationService);
 
   CadCobrancas = false;
-
   loading = false;
-
   editando = false;
+  mostrarModalPagamento = false;
 
   cobrancaSelecionada!: Cobranca;
-
-  mostrarModalPagamento = false;
   proximoVencimento: Date | null = null;
-
   idCobranca: string | null = null;
 
   alunos: Aluno[] = [];
-
   cobrancas: Cobranca[] = [];
-
   cobrancasFiltradas: Cobranca[] = [];
 
   form = this.fb.group({
     aluno: [null as Aluno | null, Validators.required],
-
     contato: ['', Validators.required],
-
     valor: [200, Validators.required],
-
     vencimento: [new Date(), Validators.required],
   });
 
   btnCancelar() {
     this.form.reset({
       aluno: null,
-
       contato: '',
-
       valor: 0,
-
       vencimento: null,
     });
 
     this.editando = false;
-
     this.idCobranca = null;
-
     this.CadCobrancas = false;
   }
 
   modalPagamento(cobranca: Cobranca) {
     this.cobrancaSelecionada = cobranca;
-
     this.mostrarModalPagamento = true;
   }
 
   ngOnInit() {
     this.buscarAlunos();
-
     this.buscarCobrancas();
   }
 
@@ -162,9 +143,7 @@ export class CobrancasComponent {
 
       this.messageService.add({
         severity: 'warn',
-
         summary: 'Atenção',
-
         detail: 'Preencha todos os campos.',
       });
 
@@ -178,22 +157,16 @@ export class CobrancasComponent {
 
       const cobranca: Cobranca = {
         alunoId: aluno.id!,
-
         alunoNome: `${aluno.nome} ${aluno.sobrenome}`,
-
         contato: this.form.value.contato!,
-
         valor: Number(this.form.value.valor),
-
         vencimento: Timestamp.fromDate(this.form.value.vencimento!),
-
         pago: false,
       };
 
       if (this.editando) {
         await this.cobrancasService.editar(
           this.idCobranca!,
-
           cobranca,
         );
       } else {
@@ -201,42 +174,32 @@ export class CobrancasComponent {
 
         await this.cobrancasService.cadastrar(
           id,
-
           cobranca,
         );
       }
 
       this.messageService.add({
         severity: 'success',
-
         summary: 'Sucesso',
-
         detail: 'Cobrança salva com sucesso.',
       });
 
       this.form.reset({
         aluno: null,
-
         contato: '',
-
         valor: 0,
-
         vencimento: null,
       });
 
       this.editando = false;
-
       this.idCobranca = null;
-
       this.CadCobrancas = false;
     } catch (erro) {
       console.error(erro);
 
       this.messageService.add({
         severity: 'error',
-
         summary: 'Erro',
-
         detail: 'Não foi possível salvar.',
       });
     } finally {
@@ -246,20 +209,15 @@ export class CobrancasComponent {
 
   editarCobranca(cobranca: Cobranca) {
     this.editando = true;
-
     this.idCobranca = cobranca.id!;
-
     this.CadCobrancas = true;
 
     const aluno = this.alunos.find((a) => a.id === cobranca.alunoId);
 
     this.form.patchValue({
       aluno: aluno ?? null,
-
       contato: cobranca.contato,
-
       valor: cobranca.valor,
-
       vencimento: cobranca.vencimento.toDate(),
     });
   }
@@ -270,17 +228,13 @@ export class CobrancasComponent {
 
       this.messageService.add({
         severity: 'success',
-
         summary: 'Sucesso',
-
         detail: 'Cobrança removida.',
       });
     } catch {
       this.messageService.add({
         severity: 'error',
-
         summary: 'Erro',
-
         detail: 'Não foi possível excluir.',
       });
     }
@@ -289,24 +243,17 @@ export class CobrancasComponent {
   modalExcluir(event: Event, cobranca: Cobranca) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-
       message: `Deseja excluir a cobrança de ${cobranca.alunoNome}?`,
-
       header: 'Confirmar exclusão',
-
       icon: 'pi pi-exclamation-triangle',
-
       acceptButtonProps: {
         label: 'Excluir',
-
         severity: 'danger',
       },
 
       rejectButtonProps: {
         label: 'Cancelar',
-
         severity: 'secondary',
-
         outlined: true,
       },
 
@@ -320,7 +267,6 @@ export class CobrancasComponent {
     if (!this.proximoVencimento) {
       this.messageService.add({
         severity: 'warn',
-
         summary: 'Informe o próximo vencimento.',
       });
 
@@ -335,9 +281,7 @@ export class CobrancasComponent {
 
         {
           ...this.cobrancaSelecionada,
-
           pago: true,
-
           dataPagamento: Timestamp.now(),
         },
       );
@@ -346,27 +290,20 @@ export class CobrancasComponent {
 
       const nova: Cobranca = {
         alunoId: this.cobrancaSelecionada.alunoId,
-
         alunoNome: this.cobrancaSelecionada.alunoNome,
-
         contato: this.cobrancaSelecionada.contato,
-
         valor: this.cobrancaSelecionada.valor,
-
         vencimento: Timestamp.fromDate(this.proximoVencimento!),
-
         pago: false,
       };
 
       await this.cobrancasService.cadastrar(
         crypto.randomUUID(),
-
         nova,
       );
 
       this.messageService.add({
         severity: 'success',
-
         summary: 'Pagamento confirmado.',
       });
 
@@ -380,9 +317,7 @@ export class CobrancasComponent {
 
   enviarWhatsapp(cobranca: Cobranca) {
     const telefone = cobranca.contato.replace(/\D/g, '');
-
     const vencimento = cobranca.vencimento.toDate().toLocaleDateString('pt-BR');
-
     const mensagem = `Olá!
 
     A mensalidade da escola de música encontra-se ${cobranca.pago ? 'PAGA' : 'PENDENTE'}.
@@ -390,19 +325,19 @@ export class CobrancasComponent {
     Aluno: ${cobranca.alunoNome}
 
     Valor: ${cobranca.valor.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        })}
+      style: 'currency',
+      currency: 'BRL',
+    })}
 
     Vencimento: ${vencimento}
 
     Obrigado!`;
 
-        window.open(
-          `https://wa.me/55${telefone}?text=${encodeURIComponent(mensagem)}`,
-          '_blank',
-        );
-      }
+    window.open(
+      `https://wa.me/55${telefone}?text=${encodeURIComponent(mensagem)}`,
+      '_blank',
+    );
+  }
 
   // filtros
   alunoFiltro: Aluno | null = null;
@@ -420,20 +355,15 @@ export class CobrancasComponent {
   ];
   filtrarCobrancas() {
     this.cobrancasFiltradas = this.cobrancas.filter((cobranca) => {
-      const alunoOk =
-        !this.alunoFiltro || cobranca.alunoId === this.alunoFiltro.id;
-
-      const statusOk =
-        this.statusFiltro === null || cobranca.pago === this.statusFiltro;
+      const alunoOk = !this.alunoFiltro || cobranca.alunoId === this.alunoFiltro.id;
+      const statusOk = this.statusFiltro === null || cobranca.pago === this.statusFiltro;
 
       return alunoOk && statusOk;
     });
   }
   limparFiltros() {
     this.alunoFiltro = null;
-
     this.statusFiltro = null;
-
     this.cobrancasFiltradas = [...this.cobrancas];
   }
 }

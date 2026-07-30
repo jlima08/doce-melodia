@@ -15,7 +15,7 @@
         <span class="material-symbols-outlined">school</span>
          Aulas
       </a>
-      @if (usuario.admin) {        
+      @if (usuario?.admin) {        
         <a
         routerLinkActive="link-ativo"
         (click)="fecharSidebarMobile()"
