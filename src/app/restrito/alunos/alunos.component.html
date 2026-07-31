@@ -159,12 +159,14 @@
 
   <p-table
     [paginator]="true"
-    [rows]="5"
+    [rows]="10"
     [rowsPerPageOptions]="[5, 10, 20]"
     [value]="alunos"
     stripedRows
     dataKey="id"
     [tableStyle]="{ 'min-width': '60rem' }"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Listando {first} a {last} de {totalRecords} alunos"
   >
     <ng-template pTemplate="header">
       <tr>

@@ -318,18 +318,17 @@ export class CobrancasComponent {
   enviarWhatsapp(cobranca: Cobranca) {
     const telefone = cobranca.contato.replace(/\D/g, '');
     const vencimento = cobranca.vencimento.toDate().toLocaleDateString('pt-BR');
-    const mensagem = `Olá!
-
+    const mensagem = `Olá, querido aluno/responsável!
     A mensalidade da escola de música encontra-se ${cobranca.pago ? 'PAGA' : 'PENDENTE'}.
-
-    Aluno: ${cobranca.alunoNome}
-
-    Valor: ${cobranca.valor.toLocaleString('pt-BR', {
+    - Aluno: ${cobranca.alunoNome}
+    - Valor: ${cobranca.valor.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     })}
-
-    Vencimento: ${vencimento}
+    - Vencimento: ${vencimento}
+    - Chave Pix: 68992334405
+    - Titular: Escola de Música Doce Melodia / Walef Moura Fernandes
+    - Banco: Sicoob
 
     Obrigado!`;
 

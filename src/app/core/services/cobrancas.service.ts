@@ -6,12 +6,14 @@ import {
   doc,
   docData,
   Firestore,
+  query,
   setDoc,
   updateDoc
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 import { Cobranca } from '../models/cobranca.model';
+import { orderBy } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -33,10 +35,8 @@ export class CobrancasService {
 
   listar(): Observable<Cobranca[]> {
 
-    const cobrancasRef = collection(
-      this.firestore,
-      'cobrancas'
-    );
+    const cobrancasRef = collection(this.firestore,'cobrancas');
+    const q = query(cobrancasRef,orderBy('vencimento', 'desc'));
 
     return collectionData(cobrancasRef, {
       idField: 'id'

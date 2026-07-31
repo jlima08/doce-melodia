@@ -197,6 +197,8 @@
   [paginator]="true"
     [rows]="5"
     [rowsPerPageOptions]="[5, 10, 20]"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Listando {first} a {last} de {totalRecords} cobranças"
   >
     <ng-template pTemplate="header">
       <tr>
@@ -206,7 +208,7 @@
 
         <th>Valor</th>
 
-        <th>Vencimento</th>
+        <th pSortableColumn="vencimento">Vencimento <p-sortIcon field="vencimento" /></th>
 
         <th>Status</th>
 

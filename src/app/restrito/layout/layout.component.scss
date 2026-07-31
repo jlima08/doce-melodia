@@ -84,6 +84,13 @@ footer {
     padding: 8px;
     justify-content: space-between;
     align-items: center;
+    div{
+        display: flex !important;
+        justify-content: end;
+        gap: 5px;
+        padding: 0px;
+        background-color: #fff;
+    }
     a{
         text-decoration: underline;
     }
@@ -220,8 +227,14 @@ footer {
         transform: translateX(0);
     }
     footer{
+        flex-direction: column-reverse;
+        align-items: center;
+        justify-content: center;
         span{
             font-size: 12px;
+        }
+        div{
+            justify-content: center;
         }
     }
     main{
