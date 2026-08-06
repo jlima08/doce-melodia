@@ -30,6 +30,8 @@ import { Dialog } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
+import { CardModule } from 'primeng/card';
+import { DataViewModule } from 'primeng/dataview';
 
 @Component({
   selector: 'app-cobrancas',
@@ -49,6 +51,9 @@ import { TagModule } from 'primeng/tag';
     ToastModule,
     ConfirmDialogModule,
     TagModule,
+    CardModule,
+    DataViewModule
+    
   ],
   templateUrl: './cobrancas.component.html',
   styleUrl: './cobrancas.component.scss',
