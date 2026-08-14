@@ -38,7 +38,7 @@ export class CobrancasService {
     const cobrancasRef = collection(this.firestore,'cobrancas');
     const q = query(cobrancasRef,orderBy('vencimento', 'desc'));
 
-    return collectionData(cobrancasRef, {
+    return collectionData(q, {
       idField: 'id'
     }) as Observable<Cobranca[]>;
 

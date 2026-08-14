@@ -1,6 +1,7 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
 
+
 <app-card-page title="Aulas">
   <span cardIcon class="material-symbols-outlined"> school </span>
 
@@ -251,6 +252,8 @@
           >
           </p-button>
 
+          @if(usuario.admin ){
+
           <p-button
             icon="pi pi-pencil"
             rounded
@@ -272,6 +275,7 @@
             (onClick)="modalExcluir($event, aula)"
           >
           </p-button>
+        }
         </td>
       </tr>
     </ng-template>

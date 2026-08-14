@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CardPageComponent } from '../../components/card-page/card-page.component';
 import { AulasService } from '../../../core/services/aulas.service';
 import { Aula } from '../../../core/models/aulas.model';
-import { ActivatedRoute } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
 import { Presenca } from '../../../core/models/presenca.model';
 import { PresencasService } from '../../../core/services/presencas.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputText } from 'primeng/inputtext';
-import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -28,7 +28,8 @@ import { TagModule } from 'primeng/tag';
     Toast,
     CheckboxModule,
     FormsModule,
-    TagModule
+    TagModule,
+    RouterLink
 ],
   templateUrl: './aulas-detalhes.component.html',
   styleUrl: './aulas-detalhes.component.scss',
