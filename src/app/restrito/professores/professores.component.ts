@@ -66,10 +66,9 @@ idProfessor: string | null = null;
   instrumentos = [
   { label: 'Violão', value: 'Violão' },
   { label: 'Guitarra', value: 'Guitarra' },
-  { label: 'Piano', value: 'Piano' },
   { label: 'Teclado', value: 'Teclado' },
   { label: 'Bateria', value: 'Bateria' },
-  { label: 'Baixo', value: 'Baixo' },
+  { label: 'Contra-Baixo', value: 'Contra-Baixo' },
   { label: 'Canto', value: 'Canto' },
   { label: 'Musicalização infantil', value: 'Musicalização infantil' }
 ];

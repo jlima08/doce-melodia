@@ -1,0 +1,185 @@
+<app-card-page title="Dashboard">
+    <span #iconTitle cardIcon class="material-symbols-outlined">dashboard</span>
+<div class="flex flex-col gap-6">
+
+  <div class="flex flex-col gap-1">
+
+    <p class="text-gray-500 m-0">
+      Resumo geral da escola de música Doce Melodia.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+    <p-card styleClass="border border-gray-200 shadow-sm">
+      <div class="flex items-center justify-between">
+
+        <div>
+          <span class="text-sm text-gray-500">
+            Total de alunos
+          </span>
+
+          <h2 class="text-3xl font-bold m-0 mt-2">
+            {{ totalAlunos }}
+          </h2>
+        </div>
+
+        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+          <span class="material-symbols-outlined text-blue-600">
+            group
+          </span>
+        </div>
+
+      </div>
+    </p-card>
+
+    <p-card styleClass="border border-gray-200 shadow-sm">
+      <div class="flex items-center justify-between">
+
+        <div>
+          <span class="text-sm text-gray-500">
+            Total de professores
+          </span>
+
+          <h2 class="text-3xl font-bold m-0 mt-2">
+            {{ totalProfessores }}
+          </h2>
+        </div>
+
+        <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center">
+          <span class="material-symbols-outlined text-amber-600">
+            artist
+          </span>
+        </div>
+
+      </div>
+    </p-card>
+
+    <p-card styleClass="border border-gray-200 shadow-sm">
+      <div class="flex items-center justify-between">
+
+        <div>
+          <span class="text-sm text-gray-500">
+            Total de aulas
+          </span>
+
+          <h2 class="text-3xl font-bold m-0 mt-2">
+            {{ totalAulas }}
+          </h2>
+        </div>
+
+        <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+          <span class="material-symbols-outlined text-green-600">
+            school
+          </span>
+        </div>
+
+      </div>
+    </p-card>
+
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+    <p-card
+      header="Alunos por instrumento"
+      styleClass="border border-gray-200 shadow-sm lg:col-span-2">
+
+      @if (instrumentosResumo.length > 0) {
+
+        <div class="h-[300px]">
+          <p-chart
+            type="bar"
+            [data]="chartData"
+            [options]="chartOptions">
+          </p-chart>
+        </div>
+
+      } @else {
+
+        <div class="h-[250px] flex flex-col items-center justify-center text-gray-500 gap-2">
+          <span class="material-symbols-outlined text-4xl">
+            music_note
+          </span>
+
+          <strong>Nenhum instrumento encontrado</strong>
+
+          <span>
+            Cadastre aulas para gerar os dados do gráfico.
+          </span>
+        </div>
+
+      }
+
+    </p-card>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-2">
+      <p-card
+        header="Resumo por instrumento"
+        styleClass="border border-gray-200 shadow-sm">
+        <div class="flex flex-col gap-3 h-[300px] overflow-auto">
+          @for (item of instrumentosResumo; track item.instrumento) {
+            <div class="flex items-center justify-between border-b border-gray-100 pb-2 pr-1">
+              <div class="flex flex-col">
+                <strong>
+                  {{ item.instrumento }}
+                </strong>
+                <span class="text-sm text-gray-500">
+                  {{ item.quantidade }} aluno(s)
+                </span>
+              </div>
+              <p-tag
+                severity="info"
+                [value]="item.quantidade.toString()">
+              </p-tag>
+            </div>
+          } @empty {
+            <div class="flex flex-col items-center justify-center py-10 text-gray-500 gap-2">
+              <span class="material-symbols-outlined text-4xl">
+                library_music
+              </span>
+              <strong>Nenhum dado disponível</strong>
+            </div>
+          }
+        </div>
+      </p-card>
+
+      <p-card
+      header="Resumo por dia da semana"
+      styleClass="border border-gray-200 shadow-sm">
+      <div class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-2">
+        @for (item of aulasPorDiaSemana; track item.dia) {
+          <div class="flex items-center justify-between border-b border-gray-100 pb-2 pr-1">
+            <div class="flex flex-col">
+              <strong>
+                {{ item.dia }}
+              </strong>
+              <span class="text-sm text-gray-500">
+                {{ item.quantidade }} aula(s)
+              </span>
+            </div>
+            <p-tag
+              severity="secondary"
+              [value]="item.quantidade.toString()">
+            </p-tag>
+          </div>
+        } @empty {
+          <div class="flex flex-col items-center justify-center py-10 text-gray-500 gap-2">
+            <span class="material-symbols-outlined text-4xl">
+              calendar_month
+            </span>
+            <strong>Nenhuma aula cadastrada</strong>
+            <span>
+              Cadastre aulas para visualizar o resumo semanal.
+            </span>
+          </div>
+        }
+      </div>
+      
+      </p-card>
+    </div>
+
+  </div>
+
+</div>
+</app-card-page>

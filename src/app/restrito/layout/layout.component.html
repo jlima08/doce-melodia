@@ -8,6 +8,13 @@
       <img src="/logo02.png" alt="" srcset="" />
     </div>
     <div class="links">
+      <a
+          routerLinkActive="link-ativo"
+          (click)="fecharSidebarMobile()"
+          routerLink="/restrito/dashboard">
+          <span class="material-symbols-outlined">dashboard</span>
+          Dashboard
+        </a> 
       
       <a routerLinkActive="link-ativo"
         (click)="fecharSidebarMobile()"
@@ -15,7 +22,8 @@
         <span class="material-symbols-outlined">school</span>
          Aulas
       </a>
-      @if (usuario?.admin) {        
+      @if (usuario?.admin) {
+               
         <a
         routerLinkActive="link-ativo"
         (click)="fecharSidebarMobile()"

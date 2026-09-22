@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-     "deployFire": "ng build && firebase deploy --only hosting"
+    "deployFire": "ng build && firebase deploy --only hosting"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +21,7 @@
     "@angular/router": "^19.2.0",
     "@primeng/themes": "^19.1.4",
     "@tailwindcss/postcss": "^4.3.2",
+    "chart.js": "^4.5.1",
     "firebase": "^11.10.0",
     "postcss": "^8.5.16",
     "primeicons": "^7.0.0",

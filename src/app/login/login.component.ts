@@ -58,7 +58,7 @@ export class LoginComponent {
       detail: `Bem-vindo, ${credential.user.email}!`
     });
 
-    await this.router.navigate(['/restrito/aulas']);
+    await this.router.navigate(['/restrito/dashboard']);
 
   } catch (error: any) {
     console.error(error);
