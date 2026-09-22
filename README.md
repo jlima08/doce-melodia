@@ -146,14 +146,14 @@ Este projeto foi criado para praticar e demonstrar conhecimentos em:
 
 - [x] Login
 - [x] CRUD de Professores
-- [ ] CRUD de Alunos
-- [ ] CRUD de Aulas
-- [ ] Dashboard
-- [ ] Calendário de aulas
+- [x] CRUD de Alunos
+- [x] CRUD de Aulas
+- [x] Dashboard
+- [x] Calendário de aulas
 - [ ] Relatórios
 - [ ] Controle de pagamentos
 - [ ] Chamada de alunos
-- [ ] Perfil do usuário
+- [x] Perfil do usuário
 
 ---
 
