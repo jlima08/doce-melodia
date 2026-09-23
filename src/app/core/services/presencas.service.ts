@@ -8,7 +8,8 @@ import {
   where,
   Timestamp,
   doc,
-  docData
+  docData,
+  orderBy
 } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
@@ -63,5 +64,23 @@ export class PresencasService {
   }) as Observable<Aula>;
 
 }
+
+  listarPorAno(ano: number): Observable<Presenca[]> {
+    const presencasRef = collection(this.firestore, 'presencas');
+
+    const inicioAno = Timestamp.fromDate(new Date(ano, 0, 1, 0, 0, 0));
+    const fimAno = Timestamp.fromDate(new Date(ano + 1, 0, 1, 0, 0, 0));
+
+    const q = query(
+      presencasRef,
+      where('dataHora', '>=', inicioAno),
+      where('dataHora', '<', fimAno),
+      orderBy('dataHora', 'desc')
+    );
+
+    return collectionData(q, {
+      idField: 'id'
+    }) as Observable<Presenca[]>;
+  }
 
 }

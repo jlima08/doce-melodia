@@ -9,6 +9,7 @@ import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { CommonModule } from '@angular/common';
 import { CardPageComponent } from '../components/card-page/card-page.component';
+import { PresencasService } from '../../core/services/presencas.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,6 +22,7 @@ export class DashboardComponent {
   private alunosService = inject(AlunosService);
   private professoresService = inject(ProfessoresService);
   private aulasService = inject(AulasService);
+  private presencasService = inject(PresencasService);
 
   totalAlunos = 0;
   totalProfessores = 0;
@@ -32,12 +34,16 @@ export class DashboardComponent {
   }[] = [];
 
   aulasPorDiaSemana: {
-  dia: string;
-  quantidade: number;
-}[] = [];
+    dia: string;
+    quantidade: number;
+  }[] = [];
 
   chartData: any;
   chartOptions: any;
+  anoAtual = new Date().getFullYear();
+
+  totalAulasConfirmadasAno = 0;
+  totalReposicoesAno = 0;
 
   ngOnInit() {
     this.carregarDashboard();
@@ -48,12 +54,18 @@ export class DashboardComponent {
       this.alunosService.listar(),
       this.professoresService.listar(),
       this.aulasService.listar(),
-      
-    ]).subscribe(([alunos, professores, aulas]) => {
+      this.presencasService.listarPorAno(this.anoAtual)
+    ]).subscribe(([alunos, professores, aulas, presencas]) => {
 
       this.totalAlunos = alunos.length;
       this.totalProfessores = professores.length;
       this.totalAulas = aulas.length;
+
+       this.totalAulasConfirmadasAno = presencas.length;
+
+      this.totalReposicoesAno = presencas.filter(
+        presenca => presenca.reposicao
+      ).length;
 
       this.instrumentosResumo = this.calcularAlunosPorInstrumento(aulas);
       this.aulasPorDiaSemana = this.calcularAulasPorDiaSemana(aulas);

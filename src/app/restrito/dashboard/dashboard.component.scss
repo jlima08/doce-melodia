@@ -1,6 +1,7 @@
 p-card{
     transition: all 0.2s;
+    // border: 1px solid #8e6f3248 !important;
 }
-p-card:hover{
+::ng-deep p-card:hover{
     scale: 1.01 !important;
 }
