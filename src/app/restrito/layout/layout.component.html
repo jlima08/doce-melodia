@@ -96,6 +96,24 @@
               <p-button icon="pi pi-times" severity="secondary"></p-button>
             }
           </button>
+           <div class="xl:hidden flex items-center gap-2">
+            <p-avatar
+              [label]="getIniciais(usuario?.nome, usuario?.sobrenome)"
+              class="!bg-[#8e6f32] !text-white !hidden"
+              size="normal"
+            />
+            <div class="flex flex-col overflow-hidden">
+              <p
+                pTooltip="{{ usuario?.nome }} {{ usuario?.sobrenome }}"
+                class="text-[16px] font-bold overflow-hidden text-ellipsis text-nowrap"
+              >
+                {{ usuario?.nome }} {{ usuario?.sobrenome }}
+              </p>
+              <p class="text-sm">
+                {{ usuario?.admin ? 'Administrador' : 'Professor' }}
+              </p>
+            </div>
+        </div>
           
         </div>
         <p-button
