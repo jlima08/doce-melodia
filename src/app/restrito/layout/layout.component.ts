@@ -1,20 +1,23 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { ButtonModule } from "primeng/button";
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { ToastModule } from "primeng/toast";
 import { AuthService } from '../../core/services/auth.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { Auth, onAuthStateChanged } from '@angular/fire/auth';
 import { ProfessoresService } from '../../core/services/professores.service';
 import { environment } from '../../environments';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-layout',
-  imports: [ButtonModule, RouterOutlet, ToastModule, ConfirmDialogModule, RouterLink, RouterLinkActive, TooltipModule, AvatarGroupModule, AvatarModule],
+  imports: [ButtonModule, RouterOutlet, ToastModule, ConfirmDialogModule, RouterLink, RouterLinkActive, TooltipModule, AvatarGroupModule, AvatarModule, BreadcrumbModule ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   providers: [ConfirmationService, MessageService]
@@ -26,6 +29,8 @@ private confirmationService = inject(ConfirmationService)
 private messageService = inject(MessageService)
 private professoresService = inject(ProfessoresService)
 private auth = inject(Auth);
+private destroyRef = inject(DestroyRef);
+
 
 open = false;
 private timeout: any;
@@ -33,9 +38,27 @@ usuario: any;
 
 version = environment.version;
 
+home: MenuItem = {
+  icon: 'pi pi-home',
+  routerLink: '/restrito/dashboard'
+};
+
+breadcrumbItems: MenuItem[] = [];
+
 ngOnInit(): void {
 
-   const authUser = this.authService.usuarioLogado();
+   this.atualizarBreadcrumb();
+
+  this.router.events
+    .pipe(
+      filter(evento => evento instanceof NavigationEnd),
+      takeUntilDestroyed(this.destroyRef)
+    )
+    .subscribe(() => {
+      this.atualizarBreadcrumb();
+    });
+
+  const authUser = this.authService.usuarioLogado();
 
   if (!authUser) return;
 
@@ -122,5 +145,59 @@ toastLogout(event: Event) {
       1000 * 60 * 20,
     );
   }
+
+  //breadcrumb
+  atualizarBreadcrumb() {
+  const url = this.router.url.split('?')[0].split('#')[0];
+
+  const paginas: Record<string, string> = {
+    dashboard: 'Dashboard',
+    alunos: 'Alunos',
+    professores: 'Professores',
+    aulas: 'Aulas',
+    cobrancas: 'Cobranças',
+    'minha-conta': 'Minha Conta'
+  };
+
+  const segmentos = url.split('/').filter(Boolean);
+
+  const indiceRestrito = segmentos.indexOf('restrito');
+  const caminho = segmentos.slice(indiceRestrito + 1);
+
+  const pagina = caminho[0];
+
+  // Página inicial
+  if (!pagina || pagina === 'dashboard') {
+    this.breadcrumbItems = [
+      { label: 'Dashboard' }
+    ];
+    return;
+  }
+
+  // Dashboard sempre aparece primeiro
+  this.breadcrumbItems = [
+    {
+      label: 'Dashboard',
+      routerLink: '/restrito/dashboard'
+    }
+  ];
+
+  // Identifica detalhes da aula
+  const detalhesAula =
+    pagina === 'aulas' && caminho.length > 1;
+
+  this.breadcrumbItems.push({
+    label: paginas[pagina] ?? 'Detalhes da aula',
+    ...(detalhesAula
+      ? { routerLink: '/restrito/aulas' }
+      : {})
+  });
+
+  if (detalhesAula) {
+    this.breadcrumbItems.push({
+      label: 'Detalhes da Aula'
+    });
+  }
+}
 
 }

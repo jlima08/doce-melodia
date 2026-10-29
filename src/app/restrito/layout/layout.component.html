@@ -84,6 +84,7 @@
     <header>
       <div class="gradiente"></div>
       <div class="btns-header">
+        
         <div class="flex gap-4 items-center">
           <button class="cursor-pointer btn-none" (click)="toggleSidebar()">
             @if (open == false) {
@@ -97,11 +98,11 @@
             }
           </button>
            <div class="xl:hidden flex items-center gap-2">
-            <p-avatar
+            <!-- <p-avatar
               [label]="getIniciais(usuario?.nome, usuario?.sobrenome)"
               class="!bg-[#8e6f32] !text-white !hidden"
               size="normal"
-            />
+            /> -->
             <div class="flex flex-col overflow-hidden">
               <p
                 pTooltip="{{ usuario?.nome }} {{ usuario?.sobrenome }}"
@@ -113,6 +114,14 @@
                 {{ usuario?.admin ? 'Administrador' : 'Professor' }}
               </p>
             </div>
+            
+        </div>
+        <div class="hidden xl:block">
+           <p-breadcrumb
+            [model]="breadcrumbItems"
+            [home]="home"
+            styleClass="!bg-transparent !border-none"
+          />
         </div>
           
         </div>
