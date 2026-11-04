@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +27,11 @@ export class AuthService {
     senha
   );
   }
+
+  recuperarSenha(email: string) {
+  this.auth.languageCode = 'pt-BR';
+
+  return sendPasswordResetEmail(this.auth, email);
+}
 
 }

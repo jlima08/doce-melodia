@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/services/auth.service';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,8 @@ import { AuthService } from '../core/services/auth.service';
     InputTextModule,
     ButtonModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DialogModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -29,6 +31,12 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private messageService = inject(MessageService)
+  mostrarRecuperacao = false;
+  loadingRecuperacao = false;
+
+formRecuperacao = this.fb.group({
+  email: ['', [Validators.required, Validators.email]]
+});
 
   form = this.fb.group({
     email: ['', Validators.required],
@@ -83,11 +91,73 @@ export class LoginComponent {
         break;
     }
 
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro ao entrar',
+        detail: mensagem
+      });
+    }
+  }
+
+  abrirRecuperacao() {
+  this.formRecuperacao.reset({
+    email: this.form.get('email')?.value ?? ''
+  });
+
+  this.mostrarRecuperacao = true;
+}
+
+//recuperar senha**********
+async enviarEmailRecuperacao() {
+  if (this.formRecuperacao.invalid) {
+    this.formRecuperacao.markAllAsTouched();
+    return;
+  }
+
+  this.loadingRecuperacao = true;
+
+  const email = this.formRecuperacao.getRawValue().email!.trim();
+
+  try {
+    await this.authService.recuperarSenha(email);
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Solicitação recebida',
+      detail: 'Se existir uma conta com esse e-mail, você receberá um link para redefinir sua senha.'
+    });
+
+    this.mostrarRecuperacao = false;
+    this.formRecuperacao.reset();
+
+  } catch (error: any) {
+    console.error(error);
+
+    let mensagem = 'Não foi possível solicitar a recuperação de senha.';
+
+    switch (error.code) {
+      case 'auth/too-many-requests':
+        mensagem = 'Muitas tentativas. Tente novamente mais tarde.';
+        break;
+
+      case 'auth/network-request-failed':
+        mensagem = 'Verifique sua conexão com a internet.';
+        break;
+
+      case 'auth/invalid-email':
+        mensagem = 'Informe um e-mail válido.';
+        break;
+    }
+
     this.messageService.add({
       severity: 'error',
-      summary: 'Erro ao entrar',
+      summary: 'Erro',
       detail: mensagem
     });
+
+  } finally {
+    this.loadingRecuperacao = false;
   }
 }
+
 }

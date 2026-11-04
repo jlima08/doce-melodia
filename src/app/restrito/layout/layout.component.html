@@ -98,6 +98,9 @@
             }
           </button>
            <div class="xl:hidden flex items-center gap-2">
+            <div class="w-11">
+              <img src="/logo02.png" alt="" srcset="" />
+            </div>
             <!-- <p-avatar
               [label]="getIniciais(usuario?.nome, usuario?.sobrenome)"
               class="!bg-[#8e6f32] !text-white !hidden"
@@ -159,4 +162,64 @@
       </footer>
     </main>
   </div>
+
+  <!-- MENU INFERIOR MOBILE -->
+    <nav class="menu-mobile" aria-label="Menu principal">
+
+      <a
+        routerLink="/restrito/dashboard"
+        routerLinkActive="mobile-ativo"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="material-symbols-outlined">dashboard</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a
+        routerLink="/restrito/aulas"
+        routerLinkActive="mobile-ativo"
+      >
+        <span class="material-symbols-outlined">school</span>
+        <span>Aulas</span>
+      </a>
+
+      @if (usuario?.admin) {
+
+        <a
+          routerLink="/restrito/professores"
+          routerLinkActive="mobile-ativo"
+        >
+          <span class="material-symbols-outlined">music_note</span>
+          <span>Professores</span>
+        </a>
+
+        <a
+          routerLink="/restrito/alunos"
+          routerLinkActive="mobile-ativo"
+        >
+          <span class="material-symbols-outlined">group</span>
+          <span>Alunos</span>
+        </a>
+
+        <a
+          routerLink="/restrito/cobrancas"
+          routerLinkActive="mobile-ativo"
+        >
+          <span class="material-symbols-outlined">
+            account_balance_wallet
+          </span>
+          <span>Cobranças</span>
+        </a>
+
+      }
+
+      <a
+        routerLink="/restrito/minha-conta"
+        routerLinkActive="mobile-ativo"
+      >
+        <span class="material-symbols-outlined">manage_accounts</span>
+        <span>Minha conta</span>
+      </a>
+
+    </nav>
 </div>

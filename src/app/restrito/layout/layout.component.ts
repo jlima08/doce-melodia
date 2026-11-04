@@ -1,6 +1,6 @@
 import { Component, DestroyRef, inject } from '@angular/core';
 import { ButtonModule } from "primeng/button";
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { ToastModule } from "primeng/toast";
 import { AuthService } from '../../core/services/auth.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -30,6 +30,7 @@ private messageService = inject(MessageService)
 private professoresService = inject(ProfessoresService)
 private auth = inject(Auth);
 private destroyRef = inject(DestroyRef);
+private activatedRoute = inject(ActivatedRoute);
 
 
 open = false;
@@ -148,7 +149,29 @@ toastLogout(event: Event) {
 
   //breadcrumb
   atualizarBreadcrumb() {
-  const url = this.router.url.split('?')[0].split('#')[0];
+  let rota = this.activatedRoute;
+
+  // Procura a rota ativa mais profunda
+  while (rota.firstChild) {
+    rota = rota.firstChild;
+  }
+
+  // Identifica a página de detalhes da aula
+  if (rota.snapshot.data['breadcrumb'] === 'detalhe-aula') {
+    this.breadcrumbItems = [
+      {
+        label: 'Aulas',
+        routerLink: '/restrito/aulas'
+      },
+      {
+        label: 'Detalhe da Aula'
+      }
+    ];
+    return;
+  }
+
+  // Outras páginas
+  const url = this.router.url.split('?')[0];
 
   const paginas: Record<string, string> = {
     dashboard: 'Dashboard',
@@ -160,44 +183,13 @@ toastLogout(event: Event) {
   };
 
   const segmentos = url.split('/').filter(Boolean);
+  const pagina = segmentos[segmentos.indexOf('restrito') + 1];
 
-  const indiceRestrito = segmentos.indexOf('restrito');
-  const caminho = segmentos.slice(indiceRestrito + 1);
-
-  const pagina = caminho[0];
-
-  // Página inicial
-  if (!pagina || pagina === 'dashboard') {
-    this.breadcrumbItems = [
-      { label: 'Dashboard' }
-    ];
-    return;
-  }
-
-  // Dashboard sempre aparece primeiro
   this.breadcrumbItems = [
     {
-      label: 'Dashboard',
-      routerLink: '/restrito/dashboard'
+      label: paginas[pagina] ?? 'Página atual'
     }
   ];
-
-  // Identifica detalhes da aula
-  const detalhesAula =
-    pagina === 'aulas' && caminho.length > 1;
-
-  this.breadcrumbItems.push({
-    label: paginas[pagina] ?? 'Detalhes da aula',
-    ...(detalhesAula
-      ? { routerLink: '/restrito/aulas' }
-      : {})
-  });
-
-  if (detalhesAula) {
-    this.breadcrumbItems.push({
-      label: 'Detalhes da Aula'
-    });
-  }
 }
 
 }

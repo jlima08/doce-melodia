@@ -41,6 +41,7 @@ export const routes: Routes = [
         },
         {
             path: 'aulas-detalhes/:id',
+            data: { breadcrumb: 'detalhe-aula' },
             loadComponent: () =>
             import('./restrito/aulas/aulas-detalhes/aulas-detalhes.component')
                 .then(m => m.AulasDetalhesComponent)

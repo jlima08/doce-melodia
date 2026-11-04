@@ -1,4 +1,68 @@
  <p-toast [showTransitionOptions]="'250ms'" [showTransformOptions]="'translateX(100%)'" [hideTransitionOptions]="'150ms'" [hideTransformOptions]="'translateX(100%)'" />
+ <p-dialog
+  header="Recuperar senha"
+  [(visible)]="mostrarRecuperacao"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '28rem', maxWidth: '95vw' }"
+>
+  <form
+    [formGroup]="formRecuperacao"
+    (ngSubmit)="enviarEmailRecuperacao()"
+    class="flex flex-col gap-5"
+  >
+    <div class="flex flex-col gap-2">
+      <p class="text-gray-500 text-sm">
+        Informe seu e-mail cadastrado para receber
+        um link de redefinição de senha.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="emailRecuperacao" class="font-medium text-sm">
+        E-mail
+      </label>
+
+      <input
+        pInputText
+        id="emailRecuperacao"
+        type="email"
+        formControlName="email"
+        placeholder="Digite seu e-mail"
+        class="w-full"
+      />
+
+      @if (
+        formRecuperacao.get('email')?.invalid &&
+        formRecuperacao.get('email')?.touched
+      ) {
+        <small class="text-red-500">
+          Informe um e-mail válido.
+        </small>
+      }
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <p-button
+        type="button"
+        label="Cancelar"
+        severity="secondary"
+        outlined
+        (onClick)="mostrarRecuperacao = false"
+      />
+
+      <p-button
+        type="submit"
+        label="Enviar link"
+        icon="pi pi-envelope"
+        severity="secondary"
+        [loading]="loadingRecuperacao"
+        [disabled]="formRecuperacao.invalid"
+      />
+    </div>
+  </form>
+</p-dialog>
 <div class="main-desktop">
     <div class="cardLeft">
         <!-- <h2>Bem-vindo ao Sistema</h2> -->
@@ -30,6 +94,9 @@
 
             <div class="w-[55%]">
                 <p-button styleClass="w-[100%]"  icon="pi pi-sign-in" label="Entrar" type="submit" [raised]="true" severity="secondary"  />
+                <div class="recuSenha">
+                    <p-button label="Esqueci minha senha" variant="text" severity="secondary" styleClass="underline" (click)="abrirRecuperacao()" />
+                </div>
             </div>
 
         </form>
@@ -68,6 +135,9 @@
                 </p-floatlabel>
                 <div class="w-[55%]">
                     <p-button type="submit" styleClass="w-[100%]" icon="pi pi-sign-in" label="Entrar" [raised]="true" severity="secondary"  />
+                    <div class="recuSenha">
+                    <p-button label="Esqueci minha senha" variant="text" severity="secondary" styleClass="underline" (click)="abrirRecuperacao()" />
+                </div>
                 </div>
                 <!-- @if (errorMessage()) {
                     <div class="p-error mt-3">{{ errorMessage() }}</div>
