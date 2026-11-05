@@ -63,7 +63,14 @@ export const routes: Routes = [
             loadComponent: () =>
                 import('./restrito/dashboard/dashboard.component')
                 .then(m => m.DashboardComponent)
-            }
+            },
+        {
+            path: 'sobre',
+            data: { title: 'Sobre' },
+            loadComponent: () =>
+                import('./restrito/sobre/sobre.component')
+                .then(m => m.SobreComponent)
+            },
         ]
        },
 ]

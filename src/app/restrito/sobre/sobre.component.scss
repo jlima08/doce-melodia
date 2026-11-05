@@ -1,0 +1,202 @@
+.sobre-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 10px;
+}
+
+.sobre-header {
+  margin-bottom: 24px;
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 6px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #6b7280;
+  }
+}
+
+.sobre-card {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.sistema-info {
+  padding: 40px 30px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #151412;
+    margin: 0;
+  }
+}
+
+.sistema-icon {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #8e6f321a;
+  border-radius: 18px;
+  color: #8e6f32;
+
+  .material-symbols-outlined {
+    font-size: 34px;
+  }
+}
+
+.sistema-subtitulo {
+  font-size: 14px;
+  font-weight: 600;
+  color: #8e6f32;
+}
+
+.descricao {
+  max-width: 600px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #6b7280;
+  margin-top: 10px;
+}
+
+.divisor {
+  height: 1px;
+  width: 85%;
+  margin: auto;
+  background: #e5e7eb;
+}
+
+.desenvolvedora {
+  padding: 35px 25px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+
+  h3 {
+    font-size: 23px;
+    font-weight: 700;
+    color: #151412;
+    margin: 0;
+  }
+
+  p {
+    max-width: 450px;
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.7;
+  }
+}
+
+.desenvolvido-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #8e6f32;
+  font-weight: 700;
+}
+
+.logo-devic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 220px;
+  min-height: 100px;
+
+  img {
+    width: 100%;
+    max-height: 130px;
+    object-fit: contain;
+  }
+}
+
+.btn-site {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 10px;
+  padding: 12px 24px;
+
+  background: #8e6f32;
+  color: white;
+
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #705724;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px #8e6f3240;
+  }
+}
+
+.sobre-footer {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+
+  padding: 16px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+  .sobre-container {
+    padding: 10px 0;
+  }
+
+  .sobre-header h1 {
+    font-size: 22px;
+  }
+
+  .sistema-info {
+    padding: 30px 18px;
+
+    h2 {
+      font-size: 24px;
+    }
+  }
+
+  .desenvolvedora {
+    padding: 30px 18px;
+  }
+
+  .logo-devic {
+    width: 170px;
+  }
+
+  .btn-site {
+    width: 100%;
+    max-width: 260px;
+  }
+}

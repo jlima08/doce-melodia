@@ -54,6 +54,12 @@
         routerLink="/restrito/minha-conta"
         ><span class="material-symbols-outlined">manage_accounts</span> Minha conta</a
       >
+      <a
+        routerLinkActive="link-ativo"
+        (click)="fecharSidebarMobile()"
+        routerLink="/restrito/sobre"
+        ><span class="material-symbols-outlined">info</span>Sobre</a
+      >
     </div>
     <div class="sidebar-end">
       <span class="details-user">
@@ -148,11 +154,17 @@
       <footer>
         <span>
           © 2026 -
-          <a
+          <!-- <a
             target="_blank"
             href="https://www.linkedin.com/in/jonatas-lima-7bb323240"
             >
             Jonatas Lima
+          </a> -->
+          <a
+            target="_blank"
+            href="https://devic.com.br"
+            >
+            DEVIC
           </a>
         </span>
         <div >
@@ -219,6 +231,13 @@
       >
         <span class="material-symbols-outlined">manage_accounts</span>
         <span>Minha conta</span>
+      </a>
+      <a
+        routerLink="/restrito/sobre"
+        routerLinkActive="mobile-ativo"
+      >
+        <span class="material-symbols-outlined">info</span>
+        <span>Sobre</span>
       </a>
 
     </nav>

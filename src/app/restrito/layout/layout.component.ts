@@ -179,7 +179,8 @@ toastLogout(event: Event) {
     professores: 'Professores',
     aulas: 'Aulas',
     cobrancas: 'Cobranças',
-    'minha-conta': 'Minha Conta'
+    'minha-conta': 'Minha Conta',
+    sobre: 'Sobre'
   };
 
   const segmentos = url.split('/').filter(Boolean);

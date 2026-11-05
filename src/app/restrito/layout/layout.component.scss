@@ -28,7 +28,7 @@
 header{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    // justify-content: space-between;
     width: 100%;
     border-bottom: 1px solid #d4d4d4;
     height: 72px;
@@ -40,7 +40,7 @@ header{
         display: flex;
         justify-content: space-between;
         align-items: center !important;
-        padding: 10px;
+        padding-right: 10px;
     }
 }
 
@@ -238,6 +238,9 @@ footer {
 
 /* MOBILE */
 @media screen and (max-width: 1032px) {
+    .btns-header{
+        padding: 8px !important;
+    }
     
     .card-alertas{
         flex-direction: column;
