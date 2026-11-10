@@ -2,75 +2,227 @@
 
 <app-card-page title="Minha Conta">
 
-    <div class="perfil">
+  <div class="flex flex-col gap-5">
 
-        <div class="campo">
-            <label>Nome</label>
+    <!-- CABEÇALHO DO PERFIL -->
+    <div
+      class="rounded-2xl border border-[#e8dcc7] bg-gradient-to-r from-[#f8f2e6] to-white p-5 sm:p-6 mt-2"
+    >
+      <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+
+        <!-- Avatar -->
+        <div
+          class="w-20 h-20 shrink-0 rounded-2xl bg-[#8e6f32] text-white flex items-center justify-center shadow-md"
+        >
+          @if (professor; as p) {
+            <span class="text-3xl font-bold uppercase">
+              {{ p.nome.charAt(0) }}{{ p.sobrenome.charAt(0) }}
+            </span>
+          } @else {
+            <i class="pi pi-user text-3xl"></i>
+          }
+        </div>
+
+        <!-- Informações -->
+        <div class="flex flex-col gap-2 min-w-0">
+
+          <div>
+            <h2 class="text-2xl font-bold text-gray-800 m-0">
+              {{ professor?.nome }} {{ professor?.sobrenome }}
+            </h2>
+
+            <p class="text-sm text-gray-500 mt-1">
+              {{ professor?.email }}
+            </p>
+          </div>
+
+          @if (professor) {
+            <div class="flex items-center gap-2">
+              <span
+                class="inline-flex items-center gap-2 rounded-full bg-[#8e6f32]/10 text-[#8e6f32] px-3 py-1 text-xs font-semibold"
+              >
+                <i class="pi pi-verified"></i>
+                {{ professor.admin ? 'Administrador' : 'Professor' }}
+              </span>
+            </div>
+          }
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CONTEÚDO -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 items-start">
+
+      <!-- INFORMAÇÕES PESSOAIS -->
+      <section class="card-conta lg:col-span-3">
+
+        <div class="flex items-center gap-3 mb-6">
+          <div class="icone-secao">
+            <i class="pi pi-user"></i>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold text-gray-800 m-0">
+              Informações pessoais
+            </h3>
+            <p class="text-sm text-gray-500 m-0">
+              Dados associados ao seu perfil
+            </p>
+          </div>
+        </div>
+
+        @if (professor; as p) {
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+            <div class="flex flex-col gap-2">
+              <label class="label-campo">Nome</label>
+              <div class="campo-info">
+                {{ p.nome }}
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="label-campo">Sobrenome</label>
+              <div class="campo-info">
+                {{ p.sobrenome }}
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2 sm:col-span-2">
+              <label class="label-campo">E-mail</label>
+              <div class="campo-info break-all">
+                {{ p.email }}
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2 sm:col-span-2">
+              <label class="label-campo">Perfil de acesso</label>
+              <div class="campo-info">
+                <i class="pi pi-shield text-[#8e6f32] mr-2"></i>
+                {{ p.admin ? 'Administrador' : 'Professor' }}
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:col-span-2">
+              <label class="label-campo">Instrumentos</label>
+
+              <div class="flex flex-wrap gap-2">
+
+                @for (instrumento of p.instrumentos; track instrumento) {
+                  <span class="instrumento-tag">
+                    <i class="pi pi-music text-xs"></i>
+                    {{ instrumento }}
+                  </span>
+                } @empty {
+                  <span class="text-sm text-gray-400">
+                    Nenhum instrumento cadastrado.
+                  </span>
+                }
+
+              </div>
+            </div>
+
+          </div>
+
+        } @else {
+          <p class="text-sm text-gray-500">
+            Carregando informações do perfil...
+          </p>
+        }
+
+      </section>
+
+      <!-- SEGURANÇA -->
+      <section class="card-conta lg:col-span-2">
+
+        <div class="flex items-center gap-3 mb-6">
+          <div class="icone-secao">
+            <i class="pi pi-lock"></i>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-bold text-gray-800 m-0">
+              Segurança
+            </h3>
+
+            <p class="text-sm text-gray-500 m-0">
+              Gerencie sua senha de acesso
+            </p>
+          </div>
+        </div>
+
+        <form
+          [formGroup]="form"
+          (ngSubmit)="alterarSenha()"
+          class="flex flex-col gap-5"
+        >
+
+          <div class="flex flex-col gap-2">
+            <label for="novaSenha" class="label-campo">
+              Nova senha
+            </label>
+
             <input
-                pInputText
-                [value]="professor?.nome + ' ' + professor?.sobrenome"
-                disabled>
-        </div>
+              id="novaSenha"
+              pInputText
+              type="password"
+              formControlName="senha"
+              autocomplete="new-password"
+              placeholder="Digite sua nova senha"
+              class="w-full"
+            />
+          </div>
 
-        <div class="campo">
-            <label>Email</label>
+          <div class="flex flex-col gap-2">
+            <label for="confirmarSenha" class="label-campo">
+              Confirmar nova senha
+            </label>
+
             <input
-                pInputText
-                [value]="professor?.email"
-                disabled>
-        </div>
+              id="confirmarSenha"
+              pInputText
+              type="password"
+              formControlName="confirmarSenha"
+              autocomplete="new-password"
+              placeholder="Confirme sua nova senha"
+              class="w-full"
+            />
+          </div>
 
-        <div class="campo">
-            <label>Perfil</label>
-            <input
-                pInputText
-                [value]="professor?.admin ? 'Administrador' : 'Professor'"
-                disabled>
-        </div>
+          <div class="flex items-start gap-3 rounded-lg bg-[#f8f2e6] p-3">
 
-        <div class="campo sm:w-[425px]">
-            <label>Instrumentos</label>
-            <textarea rows="3"cols="30" pTextarea [autoResize]="true"
-                [value]="professor?.instrumentos?.join(', ')" disabled>
-            </textarea>
-                
-        </div>
+            <i class="pi pi-info-circle text-[#8e6f32] mt-1"></i>
+
+            <p class="text-xs text-gray-600 leading-relaxed m-0">
+              Utilize uma senha forte e evite compartilhar
+              suas credenciais de acesso.
+            </p>
+
+          </div>
+
+          <div class="flex justify-end pt-2">
+
+            <p-button
+              type="submit"
+              label="Alterar senha"
+              icon="pi pi-lock"
+              severity="secondary"
+              [loading]="loading"
+              [disabled]="form.invalid"
+              styleClass="w-full sm:w-auto"
+            />
+
+          </div>
+
+        </form>
+
+      </section>
 
     </div>
 
-    <form
-        [formGroup]="form"
-        (ngSubmit)="alterarSenha()">
-
-        <p-floatlabel>
-
-            <input
-                pInputText
-                type="password"
-                formControlName="senha">
-
-            <label>Nova senha</label>
-
-        </p-floatlabel>
-
-        <p-floatlabel>
-
-            <input
-                pInputText
-                type="password"
-                formControlName="confirmarSenha">
-
-            <label>Confirmar senha</label>
-
-        </p-floatlabel>
-
-        <p-button
-            type="submit"
-            label="Alterar senha"
-            icon="pi pi-save"
-            [loading]="loading">
-        </p-button>
-
-    </form>
+  </div>
 
 </app-card-page>
