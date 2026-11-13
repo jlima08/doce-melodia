@@ -1,0 +1,22 @@
+div{
+    margin-top: 10px;
+    ul{
+        display: flex;
+        flex-direction: column;
+        
+        a{
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 4px;
+            border-bottom: 1px solid var(--dourado);
+            font-weight: 600;
+            
+            
+        }
+        a:hover{
+            background-color: #8e6f3233;
+
+        }
+    }
+}
